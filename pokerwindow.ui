@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>pokerwindow</class>
+ <widget class="QWidget" name="pokerwindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QFrame" name="frame_2">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>800</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>true</bool>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::StyledPanel</enum>
+   </property>
+   <property name="frameShadow">
+    <enum>QFrame::Raised</enum>
+   </property>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>60</y>
+      <width>251</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>218</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Balance:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="pokerBalanceNum">
+        <property name="text">
+         <string>balance</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pokerDepositButton">
+        <property name="text">
+         <string>Get Money</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="backButton">
+    <property name="geometry">
+     <rect>
+      <x>779</x>
+      <y>20</y>
+      <width>181</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Come Back to reality</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="mainPokerMenuWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>220</y>
+      <width>531</width>
+      <height>431</height>
+     </rect>
+    </property>
+    <widget class="QPushButton" name="pokerStartButton">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>400</y>
+       <width>100</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>START</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="pokerInfoText">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>10</y>
+       <width>531</width>
+       <height>371</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;That's Poker Wednesday, my dudes. This a hands-up mode with dealer. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;This bloody machine will rob you to the skin and this is how it's gonna do it:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Press &lt;/span&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Start&lt;/span&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt; button and input your ante bet to start the game. Then press &lt;/span&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Deal&lt;/span&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt; button to get your cards. If you think you're so damn lucky - press &lt;/span&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Bet&lt;/span&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;(double-ante). If you're a pussy, press &lt;/span&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Fold.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;In case you're the son of a bitch who decided to lose everything and bet on pre-flop, see what's next. The flop will be dealt and you will have two options: &lt;/span&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Call&lt;/span&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;(0 bet) or &lt;/span&gt;&lt;span style=&quot; font-size:18pt; font-weight:700;&quot;&gt;Bet&lt;/span&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;(ante size). Then you will have the same options at pre-turn and pre-river betting. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;On the river stage, the dealer reveals his hand and the winner is determined. You get either x2 of the pot if you win, or zero if you lose ignominiously. Try your luck, asshole.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="gamePokerWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>200</y>
+      <width>631</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background: #076916;
+</string>
+    </property>
+    <widget class="QGroupBox" name="boardZone">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>100</y>
+       <width>501</width>
+       <height>191</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Board</string>
+     </property>
+     <widget class="QFrame" name="flopFrame">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>261</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="flopBackground">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>261</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../Снимок экрана 2024-05-19 в 17.44.58.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="pokerFlopContent">
+       <property name="geometry">
+        <rect>
+         <x>80</x>
+         <y>50</y>
+         <width>101</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Futura</family>
+         <pointsize>24</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: transparent; </string>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:24pt;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="turnFrame">
+      <property name="geometry">
+       <rect>
+        <x>280</x>
+        <y>40</y>
+        <width>101</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="turnCell">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>101</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../Снимок экрана 2024-05-19 в 17.45.09.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="pokerTurnContent">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>70</y>
+         <width>58</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Futura</family>
+         <pointsize>24</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: transparent; </string>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QFrame" name="riverFrame">
+      <property name="geometry">
+       <rect>
+        <x>390</x>
+        <y>40</y>
+        <width>101</width>
+        <height>121</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="riverBackground">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>101</width>
+         <height>121</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../Снимок экрана 2024-05-19 в 17.45.17.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="pokerRiverContent">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>60</y>
+         <width>58</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Futura</family>
+         <pointsize>24</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: transparent; </string>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="pokerBetsBar">
+     <property name="geometry">
+      <rect>
+       <x>420</x>
+       <y>300</y>
+       <width>191</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Bets</string>
+     </property>
+     <widget class="QLineEdit" name="anteInputBar">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>100</horstretch>
+        <verstretch>20</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>ante</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="flopNum">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>60</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="turnNum">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>60</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="riverNum">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>60</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QLabel" name="riverNumTitle">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>20</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>River</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="turnNumTitle">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>20</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Turn</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="flopNumTitle">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>20</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Flop</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="anteNumTitle">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>40</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Ante</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="pokerPreflopBar" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>400</y>
+       <width>221</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <widget class="QPushButton" name="pokerRaiseButton">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>100</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Raise</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pokerFoldButton">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>0</y>
+        <width>100</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Fold</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="pokerLoseBar" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>400</y>
+       <width>221</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <widget class="QPushButton" name="pokerAgainButton">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>0</y>
+        <width>100</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Again</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="pokerFlopBar" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>400</y>
+       <width>221</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <widget class="QPushButton" name="pokerBetButton">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>100</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bet</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pokerCheckButton">
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>0</y>
+        <width>100</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Call</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="pokerDealBar" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>200</x>
+       <y>400</y>
+       <width>221</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <widget class="QPushButton" name="pokerDealButton">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>0</y>
+        <width>111</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Deal</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLabel" name="pokerPHandContent">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>340</y>
+       <width>171</width>
+       <height>101</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Futura</family>
+       <pointsize>24</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: transparent; </string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="pokerDHandContent">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>10</y>
+       <width>221</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Futura</family>
+       <pointsize>24</pointsize>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: transparent; </string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QSplitter" name="splitter">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>470</y>
+       <width>161</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <widget class="QWidget" name="layoutWidget">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Pot:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="pokerPotNum">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Prize</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="pokerPrizeNum">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
