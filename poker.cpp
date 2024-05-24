@@ -24,6 +24,8 @@ void isFlash(std::vector<int>&, double&, table&, hand&);
 void isBoat(std::vector<int>&, double&);
 void isQuads(std::vector<int>&, double&);
 void isStreetFlash(std::vector<int>&, double&, table&, hand&);
+std::string winningCombPrint(double&);
+
 
 int main() {
     std::cout << std::setprecision(10) << std::fixed;
@@ -33,24 +35,28 @@ int main() {
             deck.push_back(std::make_pair(j+1, i));
         }
     }
+
+    std::vector <int> curBest1;
+    std::vector <int> curBest2;
+    
     // здесь реализована раздача карт игрокам и генерация флопа, терна и ривера
     hand p1;
-    int rand = random(0, deck.size());
+    int rand = random(0, deck.size() - 1);
     p1.first = deck[rand];
     deck.erase(deck.begin() + rand);
-    rand = random(0, deck.size());
+    rand = random(0, deck.size() - 1) ;
     p1.second = deck[rand];
     deck.erase(deck.begin() + rand);
     hand p2;
-    rand = random(0, deck.size());
+    rand = random(0, deck.size() - 1);
     p2.first = deck[rand];
     deck.erase(deck.begin() + rand);
-    rand = random(0, deck.size());
+    rand = random(0, deck.size() - 1);
     p2.second = deck[rand];
     deck.erase(deck.begin() + rand);
     table tableRand;
     for (size_t i = 0; i < 5; i++) {
-        rand = random(0, deck.size());
+        rand = random(0, deck.size() - 1);
         tableRand.push_back(deck[rand]);
         deck.erase(deck.begin() + rand);
     }
@@ -113,7 +119,7 @@ void cardPrint(card& card) {
         {12, "K"},
         {13, "A"},
     };
-    std::cout << nominal[card.first] << suit[card.second] << ' ';
+    std::cout << nominal[card.first] << suit[card.second] << " ";
 }
 
 void printAll(hand& h1, hand& h2, table& table) { // функция выводит руки игроков и стол, чтобы можно было вручную проверить правоту программы
@@ -132,6 +138,74 @@ void printAll(hand& h1, hand& h2, table& table) { // функция выводи
     double comb2 = findComb(h2, table);
     std::cout << comb2 << '\n';
     winnerDecider(comb1, comb2);
+}
+
+std::string winningCombPrint(double& rez) {
+
+    std::map<int, std::string> nominalSingular{ // расшифровка номинала
+        {1, "Deuce"},
+        {2, "Three"},
+        {3, "Four"},
+        {4, "Five"},
+        {5, "Six"},
+        {6, "Seven"},
+        {7, "Eight"},
+        {8, "Nine"},
+        {9, "Ten"},
+        {10, "Jack"},
+        {11, "Queen"},
+        {12, "King"},
+        {13, "Ace"},
+    };
+
+    std::map<int, std::string> nominalPlural{ // расшифровка номинала
+        {1, "Deuces"},
+        {2, "Threes"},
+        {3, "Fours"},
+        {4, "Fives"},
+        {5, "Sixes"},
+        {6, "Sevens"},
+        {7, "Eights"},
+        {8, "Nines"},
+        {9, "Tens"},
+        {10, "Jacks"},
+        {11, "Queens"},
+        {12, "Kings"},
+        {13, "Aces"},
+    };
+
+    std::string stringRez = std::to_string(rez);
+    if (rez < 1) {
+        return nominalSingular[std::stoi(stringRez.substr(2, 2))] + " High";
+    }
+    if (rez < 2) {
+        return "Pair of " + nominalPlural[std::stoi(stringRez.substr(2, 2))];
+    }
+    if (rez < 3) {
+        return "Two pair: " + nominalPlural[std::stoi(stringRez.substr(2, 2))] + " and " + nominalPlural[std::stoi(stringRez.substr(4, 2))];
+    }
+    if (rez < 4) {
+        return "Three of a kind: " + nominalPlural[std::stoi(stringRez.substr(2, 2))];
+    }
+    if (rez < 5) {
+        if (std::stoi(stringRez.substr(2, 2)) == 4) return "Straight: from Ace to Five";
+        else return "Straight: from " + nominalSingular[std::stoi(stringRez.substr(2, 2)) - 4] + " to " + \
+        nominalSingular[std::stoi(stringRez.substr(2, 2))];
+    }
+    if (rez < 6) {
+        return "Flash: " + nominalSingular[std::stoi(stringRez.substr(2, 2))] + " High";
+    }
+    if (rez < 7) {
+        return "Full house: " + nominalPlural[std::stoi(stringRez.substr(2, 2))] + " full of " + \
+        nominalPlural[std::stoi(stringRez.substr(4, 2))];
+    }
+    if (rez < 8) {
+        return "Quad " + nominalPlural[std::stoi(stringRez.substr(2, 2))];
+    }
+    if (std::stoi(stringRez.substr(2, 2)) == 4) return "Straight Flash: from Ace to Five";
+    else return "Straight Flash: from " + nominalSingular[std::stoi(stringRez.substr(2, 2)) - 4] + " to " + \
+        nominalSingular[std::stoi(stringRez.substr(2, 2))];
+    
 }
 
 double findComb(hand& hand, table& table) { // функция высчитвает вес комбинации, чем больше - тем сильнее
@@ -164,9 +238,9 @@ double findComb(hand& hand, table& table) { // функция высчитвае
 
 // функция определяющая победителя
 void winnerDecider(double& comb1, double& comb2) { 
-    if (comb1 > comb2) std::cout << "A777MP wins.";
-    else if (comb2 > comb1) std::cout << "B777OP wins.";
-    else std::cout << "Friendship wins.";
+    if (comb1 > comb2) std::cout << "A777MP wins. " + winningCombPrint(comb1);
+    else if (comb2 > comb1) std::cout << "B777OP wins. " + winningCombPrint(comb2);
+    else std::cout << "Friendship wins. " + winningCombPrint(comb1);
 }
 
 // функции проверяющие наличие каждой комбинации
