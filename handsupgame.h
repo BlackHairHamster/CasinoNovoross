@@ -18,16 +18,20 @@ public:
     double findComb(hand& playerHand, table& tableCards);
     void winnerDecider(double& comb1, double& comb2);
 
+
     const hand& getPlayerHand() const { return playerHand; }
     const hand& getDealerHand() const { return dealerHand; }
     const table& getTableCards() const { return tableCards; }
     const std::string& getWinner() const { return winner; }
+    const std::string& getWinningComb() const {return winningComb; }
+    std::string winningCombPrint(double& rez);
 
 private:
     hand playerHand;
     hand dealerHand;
     table tableCards;
     std::string winner;
+    std::string winningComb;
 
     int random(int min, int max);
     void highestCard(std::vector<int>& nominalCount, double& rez);
@@ -39,6 +43,7 @@ private:
     void isBoat(std::vector<int>& nominalCount, double& rez);
     void isQuads(std::vector<int>& nominalCount, double& rez);
     void isStreetFlash(std::vector<int>& suitCount, double& rez, table& tableCards, hand& playerHand);
+
 };
 
 #endif // HANDSUPGAME_H

@@ -7,5 +7,67 @@
         <file>files/img/flopBG.png</file>
         <file>files/img/riverBG.png</file>
         <file>files/img/turnBG.png</file>
+        <file>files/music/kudasai.mp3</file>
+        <file>files/img/mysteryCard.png</file>
+        <file>files/img/koshey20.jpg</file>
+        <file>files/img/loginBG.jpeg</file>
+        <file>files/img/koshei50.jpg</file>
+        <file>files/img/koshei0.png</file>
+        <file>files/img/koshei10.png</file>
+        <file>files/img/koshei30.png</file>
+        <file>files/img/koshei40.png</file>
+        <file>files/img/cards1/2c.png</file>
+        <file>files/img/cards1/2d.png</file>
+        <file>files/img/cards1/2h.png</file>
+        <file>files/img/cards1/2s.png</file>
+        <file>files/img/cards1/3c.png</file>
+        <file>files/img/cards1/3d.png</file>
+        <file>files/img/cards1/3h.png</file>
+        <file>files/img/cards1/3s.png</file>
+        <file>files/img/cards1/4c.png</file>
+        <file>files/img/cards1/4d.png</file>
+        <file>files/img/cards1/4h.png</file>
+        <file>files/img/cards1/4s.png</file>
+        <file>files/img/cards1/5c.png</file>
+        <file>files/img/cards1/5d.png</file>
+        <file>files/img/cards1/5h.png</file>
+        <file>files/img/cards1/5s.png</file>
+        <file>files/img/cards1/6c.png</file>
+        <file>files/img/cards1/6d.png</file>
+        <file>files/img/cards1/6h.png</file>
+        <file>files/img/cards1/6s.png</file>
+        <file>files/img/cards1/7c.png</file>
+        <file>files/img/cards1/7d.png</file>
+        <file>files/img/cards1/7h.png</file>
+        <file>files/img/cards1/7s.png</file>
+        <file>files/img/cards1/8c.png</file>
+        <file>files/img/cards1/8d.png</file>
+        <file>files/img/cards1/8h.png</file>
+        <file>files/img/cards1/8s.png</file>
+        <file>files/img/cards1/9c.png</file>
+        <file>files/img/cards1/9d.png</file>
+        <file>files/img/cards1/9h.png</file>
+        <file>files/img/cards1/9s.png</file>
+        <file>files/img/cards1/Ac.png</file>
+        <file>files/img/cards1/Ad.png</file>
+        <file>files/img/cards1/Ah.png</file>
+        <file>files/img/cards1/As.png</file>
+        <file>files/img/cards1/backCard.png</file>
+        <file>files/img/cards1/Jc.png</file>
+        <file>files/img/cards1/Jd.png</file>
+        <file>files/img/cards1/Kc.png</file>
+        <file>files/img/cards1/Kd.png</file>
+        <file>files/img/cards1/Kh.png</file>
+        <file>files/img/cards1/Qd.png</file>
+        <file>files/img/cards1/Qc.png</file>
+        <file>files/img/cards1/Ks.png</file>
+        <file>files/img/cards1/Qh.png</file>
+        <file>files/img/cards1/Qs.png</file>
+        <file>files/img/cards1/Jh.png</file>
+        <file>files/img/cards1/Js.png</file>
+        <file>files/img/cards1/Tc.png</file>
+        <file>files/img/cards1/Td.png</file>
+        <file>files/img/cards1/Th.png</file>
+        <file>files/img/cards1/Ts.png</file>
     </qresource>
 </RCC>

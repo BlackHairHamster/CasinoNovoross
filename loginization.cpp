@@ -1,6 +1,10 @@
 #include "loginization.h"
 #include "ui_loginization.h"
 #include <QMessageBox>
+#include <QTabWidget>
+
+#include <QGraphicsOpacityEffect>
+
 
 loginization::loginization(QWidget *parent)
     : QDialog(parent)

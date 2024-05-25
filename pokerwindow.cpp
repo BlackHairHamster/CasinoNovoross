@@ -4,6 +4,8 @@
 #include "ui_pokerwindow.h"
 #include <QPixmap>
 #include <QMessageBox>
+#include <QThread>
+
 
 pokerwindow::pokerwindow(QWidget *parent)
     : QWidget(parent)
@@ -22,12 +24,18 @@ pokerwindow::pokerwindow(QWidget *parent)
     ui->pokerPreflopBar->hide();
     ui->pokerFlopBar->hide();
     ui->pokerLoseBar->hide();
+    ui->pokerMysteryWidget->hide();
+    QPixmap mysteryCard(":/files/img/cards1/backCard.png");
+    ui->mysteryCard1->setPixmap(mysteryCard);
+    ui->mysteryCard2->setPixmap(mysteryCard);
     QPixmap flopBG(":/files/img/flopBG.png");
+
     ui->flopBackground->setPixmap(flopBG);
     QPixmap turnBG(":/files/img/turnBG.png");
     ui->turnCell->setPixmap(turnBG);
     QPixmap riverBG(":/files/img/riverBG.png");
     ui->riverBackground->setPixmap(riverBG);
+
 
 
 }
@@ -84,15 +92,19 @@ void pokerwindow::updateDisplay()
     };
 
     if (pokerStage == "flop"){
-        QString playerHandText = QString("%1 %2 ")
-                                     .arg(cardToText(playerHand.first))
-                                     .arg(cardToText(playerHand.second));
-        QString dealerHandText = QString("%1 %2 ")
-                                     .arg(cardToText(dealerHand.first))
-                                     .arg(cardToText(dealerHand.second));
+        QString PCard1Text = QString(":/files/img/cards1/%1.png").arg(cardToText(playerHand.first));
+        QString PCard2Text = QString(":/files/img/cards1/%1.png").arg(cardToText(playerHand.second));
+        QPixmap PCard1(PCard1Text);
+        QPixmap PCard2(PCard2Text);
+        QString DCard1Text = QString(":/files/img/cards1/%1.png").arg(cardToText(dealerHand.first));
+        QString DCard2Text = QString(":/files/img/cards1/%1.png").arg(cardToText(dealerHand.second));
+        QPixmap DCard1(DCard1Text);
+        QPixmap DCard2(DCard2Text);
 
-        ui->pokerPHandContent->setText(playerHandText);
-        ui->pokerDHandContent->setText(dealerHandText);
+        ui->pokerPCard1->setPixmap(PCard1);
+        ui->pokerPCard2->setPixmap(PCard2);
+        ui->pokerDCard1->setPixmap(DCard1);
+        ui->pokerDCard2->setPixmap(DCard2);
     } else if (pokerStage == "turn"){
         QString tableText;
         int cardCounter = 0;
@@ -105,25 +117,36 @@ void pokerwindow::updateDisplay()
             }
 
         }
-        ui->pokerFlopContent->setText(tableText);
+        QString flopCardText1 = QString(":/files/img/cards1/%1.png").arg(cardToText(tableCards[0]));
+        QPixmap flopCard1(flopCardText1);
+        ui->pokerFlopCard1->setPixmap(flopCard1);
+        QString flopCardText2 = QString(":/files/img/cards1/%1.png").arg(cardToText(tableCards[1]));
+        QPixmap flopCard2(flopCardText2);
+        ui->pokerFlopCard2->setPixmap(flopCard2);
+        QString flopCardText3 = QString(":/files/img/cards1/%1.png").arg(cardToText(tableCards[2]));
+        QPixmap flopCard3(flopCardText3);
+        ui->pokerFlopCard3->setPixmap(flopCard3);
     } else if (pokerStage == "river") {
-        QString tableText = QString("%1").arg(cardToText(tableCards[3]));
-        ui->pokerTurnContent->setText(tableText);
+        QString turnCardText = QString(":/files/img/cards1/%1.png").arg(cardToText(tableCards[3]));
+        QPixmap turnCard(turnCardText);
+        ui->pokerTurnCard->setPixmap(turnCard);
     } else if (pokerStage == "showdown") {
-        QString tableText = QString("%1").arg(cardToText(tableCards[4]));
-        ui->pokerRiverContent->setText(tableText);
+        QString riverCardText = QString(":/files/img/cards1/%1.png").arg(cardToText(tableCards[4]));
+        QPixmap riverCard(riverCardText);
+        ui->pokerRiverCard->setPixmap(riverCard);
         game.printAll();
         ui->pokerFlopBar->hide();
         ui->pokerLoseBar->show();
         if (game.getWinner() == "player"){
             pokerPrize = 2*pokerPot;
-            QString winMessage = QString("You win +%1").arg(pokerPrize);
+            QString winMessage = QString("You win %1 with %2").arg(pokerPrize).arg(QString::fromStdString(game.getWinningComb()));
             QMessageBox::information(this, "", winMessage);
             ui->pokerPrizeNum->setText(QString::number(pokerPrize));
             BalanceManager::balanceInstance().depositBalance(pokerPrize);
             ui->pokerBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
         } else if (game.getWinner() == "dealer"){
-            QString loseMessage = QString("You lose -%1").arg(pokerPot);
+
+            QString loseMessage = QString("You lose %1 to %2").arg(pokerPot).arg(QString::fromStdString(game.getWinningComb()));
             QMessageBox::information(this, "", loseMessage);
             ui->pokerPreflopBar->hide();
             ui->pokerLoseBar->show();
@@ -135,11 +158,15 @@ void pokerwindow::updateDisplay()
             ui->pokerBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
         }
     } else if (pokerStage == "again"){
-        ui->pokerFlopContent->setText("");
-        ui->pokerTurnContent->setText("");
-        ui->pokerRiverContent->setText("");
-        ui->pokerPHandContent->setText("");
-        ui->pokerDHandContent->setText("");
+        ui->pokerFlopCard1->setPixmap(QPixmap());
+        ui->pokerFlopCard2->setPixmap(QPixmap());
+        ui->pokerFlopCard3->setPixmap(QPixmap());
+        ui->pokerTurnCard->setPixmap(QPixmap());
+        ui->pokerRiverCard->setPixmap(QPixmap());
+        ui->pokerPCard1->setPixmap(QPixmap());
+        ui->pokerPCard2->setPixmap(QPixmap());
+        ui->pokerDCard1->setPixmap(QPixmap());
+        ui->pokerDCard2->setPixmap(QPixmap());
     }
 
 }
@@ -149,7 +176,6 @@ void pokerwindow::on_pokerStartButton_clicked()
     ui->gamePokerWidget->show();
     ui->mainPokerMenuWidget->hide();
     pokerStage="ante";
-
 }
 
 
@@ -164,6 +190,7 @@ void pokerwindow::on_pokerDealButton_clicked()
     ui->pokerBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
     ui->pokerDealBar->hide();
     ui->pokerPreflopBar->show();
+    ui->pokerMysteryWidget->show();
     pokerStage="flop";
     game.startNewGame();
     updateDisplay();
@@ -188,7 +215,7 @@ void pokerwindow::on_pokerRaiseButton_clicked()
 void pokerwindow::on_pokerFoldButton_clicked()
 {
     pokerStage = "lose";
-    QString loseMessage = QString("You lose -%1").arg(pokerPot);
+    QString loseMessage = QString("You lose %1").arg(pokerPot);
     QMessageBox::information(this, "", loseMessage);
     ui->pokerPreflopBar->hide();
     ui->pokerLoseBar->show();
@@ -215,6 +242,7 @@ void pokerwindow::on_pokerBetButton_clicked()
         ui->pokerBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
         ui->riverNum->setText(QString::number(pokerAnte));
         pokerStage = "showdown";
+        ui->pokerMysteryWidget->hide();
         updateDisplay();
     }
 
@@ -232,8 +260,8 @@ void pokerwindow::on_pokerCheckButton_clicked()
     } else if (pokerStage=="river") {
         ui->riverNum->setText("0");
         pokerStage = "showdown";
+        ui->pokerMysteryWidget->hide();
         updateDisplay();
-
         ui->pokerFlopBar->hide();
         ui->pokerLoseBar->show();
     }
@@ -256,4 +284,6 @@ void pokerwindow::on_pokerAgainButton_clicked()
     ui->riverNum->setText("0");
     ui->anteInputBar->setDisabled(false);
 }
+
+
 

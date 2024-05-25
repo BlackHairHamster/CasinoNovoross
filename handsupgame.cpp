@@ -12,6 +12,8 @@ int HandsUpGame::random(int min, int max) {
     return min + rand() % (( max + 1 ) - min);
 }
 
+
+
 void HandsUpGame::startNewGame() {
     std::vector<card> deck;
     for (size_t i = 0; i < 4; i++) {
@@ -20,22 +22,22 @@ void HandsUpGame::startNewGame() {
         }
     }
 
-    int rand = random(0, deck.size());
+    int rand = random(0, deck.size()-1);
     playerHand.first = deck[rand];
     deck.erase(deck.begin() + rand);
-    rand = random(0, deck.size());
+    rand = random(0, deck.size()-1);
     playerHand.second = deck[rand];
     deck.erase(deck.begin() + rand);
-    rand = random(0, deck.size());
+    rand = random(0, deck.size()-1);
     dealerHand.first = deck[rand];
     deck.erase(deck.begin() + rand);
-    rand = random(0, deck.size());
+    rand = random(0, deck.size()-1);
     dealerHand.second = deck[rand];
     deck.erase(deck.begin() + rand);
     tableCards.clear();
 
     for (size_t i = 0; i < 5; i++) {
-        rand = random(0, deck.size());
+        rand = random(0, deck.size()-1);
         tableCards.push_back(deck[rand]);
         deck.erase(deck.begin() + rand);
     }
@@ -74,10 +76,87 @@ double HandsUpGame::findComb(hand& playerHand, table& tableCards) {
     return rez;
 }
 
+std::string HandsUpGame::winningCombPrint(double& rez) {
+
+    std::map<int, std::string> nominalSingular{ // расшифровка номинала
+                                               {1, "Deuce"},
+                                               {2, "Three"},
+                                               {3, "Four"},
+                                               {4, "Five"},
+                                               {5, "Six"},
+                                               {6, "Seven"},
+                                               {7, "Eight"},
+                                               {8, "Nine"},
+                                               {9, "Ten"},
+                                               {10, "Jack"},
+                                               {11, "Queen"},
+                                               {12, "King"},
+                                               {13, "Ace"},
+                                               };
+
+    std::map<int, std::string> nominalPlural{ // расшифровка номинала
+                                             {1, "Deuces"},
+                                             {2, "Threes"},
+                                             {3, "Fours"},
+                                             {4, "Fives"},
+                                             {5, "Sixes"},
+                                             {6, "Sevens"},
+                                             {7, "Eights"},
+                                             {8, "Nines"},
+                                             {9, "Tens"},
+                                             {10, "Jacks"},
+                                             {11, "Queens"},
+                                             {12, "Kings"},
+                                             {13, "Aces"},
+                                             };
+
+    std::string stringRez = std::to_string(rez);
+    if (rez < 1) {
+        return nominalSingular[std::stoi(stringRez.substr(2, 2))] + " High";
+    }
+    if (rez < 2) {
+        return "Pair of " + nominalPlural[std::stoi(stringRez.substr(2, 2))];
+    }
+    if (rez < 3) {
+        return "Two pair: " + nominalPlural[std::stoi(stringRez.substr(2, 2))] + " and " + nominalPlural[std::stoi(stringRez.substr(4, 2))];
+    }
+    if (rez < 4) {
+        return "Three of a kind: " + nominalPlural[std::stoi(stringRez.substr(2, 2))];
+    }
+    if (rez < 5) {
+        if (std::stoi(stringRez.substr(2, 2)) == 4) return "Straight: from Ace to Five";
+        else return "Straight: from " + nominalSingular[std::stoi(stringRez.substr(2, 2)) - 4] + " to " + \
+                   nominalSingular[std::stoi(stringRez.substr(2, 2))];
+    }
+    if (rez < 6) {
+        return "Flash: " + nominalSingular[std::stoi(stringRez.substr(2, 2))] + " High";
+    }
+    if (rez < 7) {
+        return "Full house: " + nominalPlural[std::stoi(stringRez.substr(2, 2))] + " full of " + \
+               nominalPlural[std::stoi(stringRez.substr(4, 2))];
+    }
+    if (rez < 8) {
+        return "Quad " + nominalPlural[std::stoi(stringRez.substr(2, 2))];
+    }
+    if (std::stoi(stringRez.substr(2, 2)) == 4) return "Straight Flash: from Ace to Five";
+    else return "Straight Flash: from " + nominalSingular[std::stoi(stringRez.substr(2, 2)) - 4] + " to " + \
+               nominalSingular[std::stoi(stringRez.substr(2, 2))];
+
+}
+
 void HandsUpGame::winnerDecider(double& comb1, double& comb2) {
-    if (comb1 > comb2) winner = "player";
-    else if (comb2 > comb1) winner = "dealer";
-    else winner = "tie";
+    if (comb1 > comb2) {
+        winner = "player";
+        winningComb = winningCombPrint(comb1);
+    }
+    else if (comb2 > comb1) {
+        winner = "dealer";
+        winningComb = winningCombPrint(comb2);
+    }
+    else {
+        winner = "tie";
+        winningComb = winningCombPrint(comb1);
+    }
 }
 
 

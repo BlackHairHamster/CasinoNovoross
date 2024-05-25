@@ -5,6 +5,9 @@
 #include "balanceManager.h"
 #include "pokerwindow.h"
 #include "loginization.h"
+#include <SDL.h>
+#include <SDL_mixer.h>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,12 +31,12 @@ private slots:
     void on_depositButton_clicked();
     void on_posterButton1_clicked();
     void on_signInButton_clicked();
-
     void on_signUpButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     pokerwindow *window;
     loginization *loginWindow;
+    Mix_Music *backgroundMusic;
 };
 #endif // MAINWINDOW_H

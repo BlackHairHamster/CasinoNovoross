@@ -9,8 +9,14 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+
+
+
+find_package(SDL2 REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
 set(TS_FILES CasinoNovoross_en_150.ts)
 
@@ -60,7 +66,8 @@ else()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(CasinoNovoross PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(CasinoNovoross PRIVATE Qt${QT_VERSION_MAJOR}::Widgets SDL2::SDL2 SDL2_mixer::SDL2_mixer)
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
