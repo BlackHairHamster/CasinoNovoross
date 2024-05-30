@@ -69,5 +69,13 @@
         <file>files/img/cards1/Td.png</file>
         <file>files/img/cards1/Th.png</file>
         <file>files/img/cards1/Ts.png</file>
+        <file>files/music/edge.mp3</file>
+        <file>files/music/SVO.mp3</file>
+        <file>files/img/songMuteIcon.png</file>
+        <file>files/img/songNextIcon.png</file>
+        <file>files/img/songPauseIcon.png</file>
+        <file>files/img/songPlayIcon.png</file>
+        <file>files/img/songPrevIcon.png</file>
+        <file>files/img/songVolUpIcon.png</file>
     </qresource>
 </RCC>

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>PokerOk</string>
   </property>
   <widget class="QFrame" name="frame_2">
    <property name="geometry">
@@ -19,7 +19,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>800</height>
+     <height>801</height>
     </rect>
    </property>
    <property name="autoFillBackground">

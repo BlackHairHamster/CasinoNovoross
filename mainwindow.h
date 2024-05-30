@@ -7,6 +7,8 @@
 #include "loginization.h"
 #include <SDL.h>
 #include <SDL_mixer.h>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 
 QT_BEGIN_NAMESPACE
@@ -22,6 +24,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    bool volIsUp = true;
 
 public slots:
     void updateBalanceDisplay(int newBalance);
@@ -33,10 +36,18 @@ private slots:
     void on_signInButton_clicked();
     void on_signUpButton_clicked();
 
+    void on_songNextButton_clicked();
+
+    void on_songPlayButton_clicked();
+
+    void on_songVolButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     pokerwindow *window;
     loginization *loginWindow;
     Mix_Music *backgroundMusic;
+    QMediaPlayer *player;
+    QAudioOutput *audioOutput;
 };
 #endif // MAINWINDOW_H

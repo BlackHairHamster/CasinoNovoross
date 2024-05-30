@@ -3,10 +3,13 @@
 #include "pokerwindow.h"
 #include "./ui_mainwindow.h"
 #include "loginization.h"
-#include <SDL.h>
-#include <SDL_mixer.h>
 #include <QMovie>
 #include <QUrl>
+#include <QDir>
+#include <QMediaPlayer>
+#include <QAudioOutput>
+#include <QCoreApplication>
+
 
 
 
@@ -34,28 +37,47 @@ MainWindow::MainWindow(QWidget *parent)
     noProfit->start();
 
 
+    QPixmap nextIcon(":/files/img/songNextIcon.png");
+    ui->songNextButton->setIcon(nextIcon);
+    QPixmap pauseIcon(":/files/img/songPauseIcon.png");
+    ui->songPlayButton->setIcon(pauseIcon);
+    QPixmap prevIcon(":/files/img/songPrevIcon.png");
+    ui->songPrevButton->setIcon(prevIcon);
+    QPixmap volUpIcon(":/files/img/songVolUpIcon.png");
+    ui->songVolButton->setIcon(volUpIcon);
+
+
+    player = new QMediaPlayer(this);
+    player->setSource(QUrl::fromLocalFile("/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3"));
+    audioOutput = new QAudioOutput(this);
+    player->setAudioOutput(audioOutput);
+    audioOutput->setVolume(50);
+    ui->songNameLabel->setText("Kudasai");
+    player->play();
+
+    ui->songVolSlider->setRange(0, 100);
+    ui->songVolSlider->setValue(50);
+    ui->songPosSlider->setRange(0, player->duration());
+
+    connect(ui->songVolSlider, &QSlider::valueChanged, this, [&](int value) {
+        audioOutput->setVolume(value / 100.0);
+    });
+
+    connect(ui->songPosSlider, &QSlider::sliderMoved, this, [&](int position) {
+        player->setPosition(position);
+    });
+
+    connect(player, &QMediaPlayer::positionChanged, this, [&](qint64 position) {
+        ui->songPosSlider->setValue(position);
+    });
+
+    connect(player, &QMediaPlayer::durationChanged, this, [&](qint64 duration) {
+        ui->songPosSlider->setRange(0, duration);
+    });
+
 
     connect(&BalanceManager::balanceInstance(), &BalanceManager::balanceChanged,
            this, &MainWindow::updateBalanceDisplay);  // подписка на сигнал об обновлении баланса
-
-    if (SDL_Init(SDL_INIT_AUDIO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %sn", SDL_GetError());
-        // Обработка ошибки и выход из программы
-    } else {
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
-            printf("SDL_mixer could not initialize! SDL_mixer Error: %sn", Mix_GetError());
-            // Обработка ошибки и выход из программы
-        } else {
-            // Загружаем и воспроизводим музыку
-            backgroundMusic = Mix_LoadMUS("/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3");
-            if (backgroundMusic == nullptr) {
-                printf("Failed to load background music! SDL_mixer Error: %sn", Mix_GetError());
-            } else {
-                Mix_PlayMusic(backgroundMusic, -1);
-                Mix_VolumeMusic(MIX_MAX_VOLUME / 2); // Устанавливаем громкость (0 - 128)
-            }
-        }
-    }
 
 
 
@@ -124,5 +146,41 @@ void MainWindow::on_signUpButton_clicked()
 {
     loginWindow = new loginization(this);
     loginWindow->show();
+}
+
+
+void MainWindow::on_songNextButton_clicked()
+{
+
+}
+
+
+void MainWindow::on_songPlayButton_clicked()
+{
+    if (player->isPlaying() == true) {
+        QPixmap playIcon(":/files/img/songPlayIcon.png");
+        ui->songPlayButton->setIcon(playIcon);
+        player->pause();
+    } else {
+        QPixmap pauseIcon(":/files/img/songPauseIcon.png");
+        ui->songPlayButton->setIcon(pauseIcon);
+        player->play();
+    }
+}
+
+
+void MainWindow::on_songVolButton_clicked()
+{
+    if (volIsUp == true) {
+        QPixmap muteIcon(":/files/img/songMuteIcon.png");
+        ui->songVolButton->setIcon(muteIcon);
+        ui->songVolSlider->setValue(0);
+        volIsUp = false;
+    } else {
+        QPixmap volUpIcon(":/files/img/songVolUpIcon.png");
+        ui->songVolButton->setIcon(volUpIcon);
+        ui->songVolSlider->setValue(50);
+        volIsUp = true;
+    }
 }
 

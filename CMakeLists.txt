@@ -10,8 +10,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools Multimedia)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Multimedia)
 
 
 
@@ -43,6 +43,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 
 
 
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET CasinoNovoross APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -66,7 +67,7 @@ else()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(CasinoNovoross PRIVATE Qt${QT_VERSION_MAJOR}::Widgets SDL2::SDL2 SDL2_mixer::SDL2_mixer)
+target_link_libraries(CasinoNovoross PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt6::Multimedia SDL2::SDL2 SDL2_mixer::SDL2_mixer)
 
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

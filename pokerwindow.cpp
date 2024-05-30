@@ -138,7 +138,7 @@ void pokerwindow::updateDisplay()
         ui->pokerFlopBar->hide();
         ui->pokerLoseBar->show();
         if (game.getWinner() == "player"){
-            pokerPrize = 2*pokerPot;
+            pokerPrize = 2*(pokerPot-pokerAnte);
             QString winMessage = QString("You win %1 with %2").arg(pokerPrize).arg(QString::fromStdString(game.getWinningComb()));
             QMessageBox::information(this, "", winMessage);
             ui->pokerPrizeNum->setText(QString::number(pokerPrize));
@@ -152,7 +152,8 @@ void pokerwindow::updateDisplay()
             ui->pokerLoseBar->show();
         } else if (game.getWinner() == "tie") {
             pokerPrize = pokerPot;
-            QMessageBox::information(this, "", "Tie");
+            QString tieMessage = QString("Tie: %1").arg(QString::fromStdString(game.getWinningComb()));
+            QMessageBox::information(this, "", tieMessage);
             ui->pokerPrizeNum->setText(QString::number(pokerPrize));
             BalanceManager::balanceInstance().depositBalance(pokerPrize);
             ui->pokerBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
