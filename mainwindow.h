@@ -2,14 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "balanceManager.h"
-#include "pokerwindow.h"
-#include "loginization.h"
-#include <SDL.h>
-#include <SDL_mixer.h>
-#include <QMediaPlayer>
-#include <QAudioOutput>
-
+#include <QtSql>
+#include <QSqlDatabase>
+#include <QMessageBox>
+#include <QSqlDriver>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,30 +20,15 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    bool volIsUp = true;
-
-public slots:
-    void updateBalanceDisplay(int newBalance);
-
 
 private slots:
-    void on_depositButton_clicked();
-    void on_posterButton1_clicked();
-    void on_signInButton_clicked();
-    void on_signUpButton_clicked();
+    void on_regButton_clicked();
 
-    void on_songNextButton_clicked();
 
-    void on_songPlayButton_clicked();
-
-    void on_songVolButton_clicked();
+    void on_logButton_clicked();
 
 private:
     Ui::MainWindow *ui;
-    pokerwindow *window;
-    loginization *loginWindow;
-    Mix_Music *backgroundMusic;
-    QMediaPlayer *player;
-    QAudioOutput *audioOutput;
+    QSqlDatabase database;
 };
 #endif // MAINWINDOW_H
