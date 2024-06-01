@@ -106,22 +106,31 @@ void MainWindow::on_regButton_clicked()
     QString password = ui->passwordReg->text();
     QString login  = ui->loginReg->text();
     QString repeatPassword = ui->repeatPassword->text();
-    std::cout << username.toStdString()<<'\t';
-    std::cout << login.toStdString()<<'\n';
     std::hash<QString> hasher;
     size_t hashedPassword = hasher(password);
     QString NormalHashedPassword = QString::number(hashedPassword);
+    std::cout << username.toStdString()<<'\t';
+    std::cout << login.toStdString()<<'\n';
     std::cout<<hasher(password)<<'\n';
 
     auto pointer = std::find(logins.begin(), logins.end(), login);
-    if (password!=repeatPassword){
-        std::cout<<"passwords are not the same"<<'\n';
-        QMessageBox::information(this, "пароли не совпадают","мошенник! пароли не совпали!");
+
+    if(username==""){
+        std::cout<<"no username"<<'\n';
+        QMessageBox::information(this, "имя пользователя не введено","куда ж нам без имени пользователя...");
+    }else if(login==""){
+        std::cout<<"no login"<<'\n';
+        QMessageBox::information(this, "логин не введен!","логин временно отсутствует... может потом вернется?");
+    }else if(password==""){
+        std::cout<<"no password"<<'\n';
+        QMessageBox::information(this, "пароль не введен!","а пароль где? ручки-то, вот они!");
     }else if(pointer!=logins.end()){
         std::cout<<"such login has been already created"<<'\n';
         QMessageBox::information(this, "такой логин уже существует","прояви фантазию, придумай уникальный логин!");
+    }else if(password!=repeatPassword){
+        std::cout<<"passwords are not the same"<<'\n';
+        QMessageBox::information(this, "пароли не совпадают","мошенник! пароли не совпали!");
     }else{
-
         sqlStatement = "INSERT INTO data (username, login, password) VALUES ('" + username.toStdString() + "', '" + login.toStdString() + "', '" + NormalHashedPassword.toStdString() + "');";
         rc = sqlite3_exec(db, sqlStatement.c_str(), 0, 0, &errMsg);
         sqlite3_close(db);
@@ -139,7 +148,6 @@ void MainWindow::on_logButton_clicked()
         QMessageBox::information(this, "бд не подключена","чушпанчик, базу данных кто подлючать будет? не по пацански...");
         return;
     }
-
     QSqlQuery query;
     query.prepare("SELECT username, login, password FROM data");
     if (!query.exec()) {
@@ -175,22 +183,27 @@ void MainWindow::on_logButton_clicked()
     std::cout<<'\n';
     QString insertedLogin = ui->login->text();
     QString insertedPassword = ui->password->text();
+    std::hash<QString> hasher;
+    size_t insertedHashedPassword = hasher(insertedPassword);
+    QString NormalInsertedHashedPassword = QString::number(insertedHashedPassword);
     std::cout << insertedLogin.toStdString()<<'\t';
     std::cout << insertedPassword.toStdString()<<'\n';
     int index;
+    bool flag=false;
     auto point = std::find(logins.begin(), logins.end(), insertedLogin);
     if (point!=logins.end()){
         index=point-logins.begin();
+        flag=true;
     }
     else{
         std::cout<<"no such login"<<'\n';
         QMessageBox::information(this, "такого логина не существует","такого логина не существует, попробуйте вспомнить свой логин");
     }
     std::cout<<index<<'\n';
-    if (insertedPassword==passwords[index]){
+    if (flag && NormalInsertedHashedPassword==passwords[index]){
         std::cout<<"you are allowed to visit our casino"<<'\n';
         QMessageBox::information(this, "победа!","проходи, будь как дома");
-    }else{
+    }else if(flag && NormalInsertedHashedPassword!=passwords[index]){
         std::cout<<"wrong password"<<'\n';
         QMessageBox::information(this, "неверный пароль","чушпанам здесь не рады!! крути педали, пока не дали");
     }
