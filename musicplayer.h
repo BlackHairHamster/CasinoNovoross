@@ -1,47 +1,41 @@
 #ifndef MUSICPLAYER_H
 #define MUSICPLAYER_H
 
+#include <QObject>
 #include <QMediaPlayer>
-#include <QList>
-#include <QUrl>
+#include <QAudioOutput>
 
-class MusicPlayer {
+class MusicPlayer : public QObject
+{
+    Q_OBJECT
+
 public:
-    MusicPlayer() {
-        connect(&player, &QMediaPlayer::mediaStatusChanged, this, &MusicPlayer::onMediaStatusChanged);
-    }
+    explicit MusicPlayer(QObject *parent = nullptr);
+    void play();
+    void pause();
+    void setVolume(int volume);
+    void setPosition(int position);
+    QString getCurrentTrackName(const QStringList &playlist) const;
+    void setAudioSource(const QString &source);
+    void next();
+    void prev();
+    void setPlaylist(const QStringList &playlist);
 
-    void setPlaylist(const QList<QUrl>& urls) {
-        playlist = urls;
-        currentIndex = -1;
-    }
 
-    void nextTrack() {
-        if (playlist.isEmpty()) return;
-        currentIndex = (currentIndex + 1) % playlist.size();
-        player.setSource(playlist.at(currentIndex));
-        player.play();
-    }
 
-    void previousTrack() {
-        if (playlist.isEmpty()) return;
-        currentIndex = (currentIndex - 1 + playlist.size()) % playlist.size(); // Чтобы избежать отрицательного индекса
-        player.setSource(playlist.at(currentIndex));
-        player.play();
-    }
+signals:
+    void positionChanged(int position);
+    void durationChanged(int duration);
 
 private:
-    QMediaPlayer player;
-    QList<QUrl> playlist;
-    int currentIndex = -1;
+    QMediaPlayer *player;
+    QAudioOutput *audioOutput;
+    QString currentTrack;
+    QStringList playlist;
+    int currentTrackIndex;
+    void playCurrentIndex();
 
-    void onMediaStatusChanged(QMediaPlayer::MediaStatus status) {
-        if (status == QMediaPlayer::EndOfMedia) {
-            next(); // Автоматически переключиться на следующий трек после окончания текущего
-        }
-    }
 };
 
-
-
 #endif // MUSICPLAYER_H
+

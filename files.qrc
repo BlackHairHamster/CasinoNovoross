@@ -77,5 +77,6 @@
         <file>files/img/songPlayIcon.png</file>
         <file>files/img/songPrevIcon.png</file>
         <file>files/img/songVolUpIcon.png</file>
+        <file>files/music/Эщ Эщ.mp3</file>
     </qresource>
 </RCC>

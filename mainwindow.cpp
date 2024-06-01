@@ -16,8 +16,10 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , backgroundMusic(nullptr)
+
+
 {
+    musicPlayer = new MusicPlayer(this);
     ui->setupUi(this);
     ui->balanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
     QIcon posterButtonIcon1(QPixmap(":/files/img/poster1.png"));
@@ -46,34 +48,52 @@ MainWindow::MainWindow(QWidget *parent)
     QPixmap volUpIcon(":/files/img/songVolUpIcon.png");
     ui->songVolButton->setIcon(volUpIcon);
 
-
-    player = new QMediaPlayer(this);
-    player->setSource(QUrl::fromLocalFile("/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3"));
-    audioOutput = new QAudioOutput(this);
-    player->setAudioOutput(audioOutput);
-    audioOutput->setVolume(50);
-    ui->songNameLabel->setText("Kudasai");
-    player->play();
-
-    ui->songVolSlider->setRange(0, 100);
+    musicPlayer->setVolume(50);
     ui->songVolSlider->setValue(50);
-    ui->songPosSlider->setRange(0, player->duration());
 
-    connect(ui->songVolSlider, &QSlider::valueChanged, this, [&](int value) {
-        audioOutput->setVolume(value / 100.0);
+    connect(ui->songVolSlider, &QSlider::valueChanged, musicPlayer, &MusicPlayer::setVolume);
+
+    connect(ui->songPosSlider, &QSlider::sliderMoved, musicPlayer, &MusicPlayer::setPosition);
+
+    connect(musicPlayer, &MusicPlayer::positionChanged, ui->songPosSlider, &QSlider::setValue);
+    connect(musicPlayer, &MusicPlayer::durationChanged, this, [this](int duration) {
+        ui->songPosSlider->setMaximum(duration);
     });
 
-    connect(ui->songPosSlider, &QSlider::sliderMoved, this, [&](int position) {
-        player->setPosition(position);
-    });
+    musicPlayer->setPlaylist(myPlaylist);
+    ui->songNameLabel->setText(musicPlayer->getCurrentTrackName(myPlaylist));
+    musicPlayer->play();
 
-    connect(player, &QMediaPlayer::positionChanged, this, [&](qint64 position) {
-        ui->songPosSlider->setValue(position);
-    });
 
-    connect(player, &QMediaPlayer::durationChanged, this, [&](qint64 duration) {
-        ui->songPosSlider->setRange(0, duration);
-    });
+
+
+    // player = new QMediaPlayer(this);
+    // player->setSource(QUrl::fromLocalFile("/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3"));
+    // audioOutput = new QAudioOutput(this);
+    // player->setAudioOutput(audioOutput);
+    // audioOutput->setVolume(50);
+    // ui->songNameLabel->setText("Kudasai");
+    // player->play();
+
+    // ui->songVolSlider->setRange(0, 100);
+    // ui->songVolSlider->setValue(50);
+    // ui->songPosSlider->setRange(0, player->duration());
+
+    // connect(ui->songVolSlider, &QSlider::valueChanged, this, [&](int value) {
+    //     audioOutput->setVolume(value / 100.0);
+    // });
+
+    // connect(ui->songPosSlider, &QSlider::sliderMoved, this, [&](int position) {
+    //     player->setPosition(position);
+    // });
+
+    // connect(player, &QMediaPlayer::positionChanged, this, [&](qint64 position) {
+    //     ui->songPosSlider->setValue(position);
+    // });
+
+    // connect(player, &QMediaPlayer::durationChanged, this, [&](qint64 duration) {
+    //     ui->songPosSlider->setRange(0, duration);
+    // });
 
 
     connect(&BalanceManager::balanceInstance(), &BalanceManager::balanceChanged,
@@ -112,7 +132,6 @@ void MainWindow::on_posterButton1_clicked()
         window = new pokerwindow(this);
         connect(window, &pokerwindow::balanceChanged, this, &MainWindow::updateBalanceDisplay);
     }
-
     window->show();
 }
 
@@ -151,20 +170,29 @@ void MainWindow::on_signUpButton_clicked()
 
 void MainWindow::on_songNextButton_clicked()
 {
+    musicPlayer->next();
+    ui->songNameLabel->setText(musicPlayer->getCurrentTrackName(myPlaylist));
+}
 
+void MainWindow::on_songPrevButton_clicked()
+{
+    musicPlayer->prev();
+    ui->songNameLabel->setText(musicPlayer->getCurrentTrackName(myPlaylist));
 }
 
 
 void MainWindow::on_songPlayButton_clicked()
 {
-    if (player->isPlaying() == true) {
+    if (isPlaying) {
         QPixmap playIcon(":/files/img/songPlayIcon.png");
         ui->songPlayButton->setIcon(playIcon);
-        player->pause();
+        musicPlayer->pause();
+        isPlaying = false;
     } else {
         QPixmap pauseIcon(":/files/img/songPauseIcon.png");
         ui->songPlayButton->setIcon(pauseIcon);
-        player->play();
+        musicPlayer->play();
+        isPlaying = true;
     }
 }
 
@@ -183,4 +211,7 @@ void MainWindow::on_songVolButton_clicked()
         volIsUp = true;
     }
 }
+
+
+
 

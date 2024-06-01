@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "balanceManager.h"
 #include "pokerwindow.h"
+#include "musicplayer.h"
 #include "loginization.h"
 #include <SDL.h>
 #include <SDL_mixer.h>
@@ -23,8 +24,10 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
     bool volIsUp = true;
+    bool isPlaying = true;
+    QStringList myPlaylist = {"/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/Эщ Эщ.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/SVO.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/Сучка.mp3"};
+    ~MainWindow();
 
 public slots:
     void updateBalanceDisplay(int newBalance);
@@ -42,12 +45,16 @@ private slots:
 
     void on_songVolButton_clicked();
 
+    void on_songPrevButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     pokerwindow *window;
     loginization *loginWindow;
     Mix_Music *backgroundMusic;
+    MusicPlayer *musicPlayer;
     QMediaPlayer *player;
     QAudioOutput *audioOutput;
+
 };
 #endif // MAINWINDOW_H

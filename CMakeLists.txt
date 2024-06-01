@@ -39,6 +39,8 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         pokerwindow.h pokerwindow.cpp pokerwindow.ui
         loginization.h loginization.cpp loginization.ui
         handsupgame.h handsupgame.cpp
+        musicplayer.h musicplayer.cpp
+
 
 
 
