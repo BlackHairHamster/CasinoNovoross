@@ -108,9 +108,12 @@ void MainWindow::on_regButton_clicked()
     QString repeatPassword = ui->repeatPassword->text();
     std::cout << username.toStdString()<<'\t';
     std::cout << login.toStdString()<<'\n';
+    std::hash<QString> hasher;
+    size_t hashedPassword = hasher(password);
+    QString NormalHashedPassword = QString::number(hashedPassword);
+    std::cout<<hasher(password)<<'\n';
 
     auto pointer = std::find(logins.begin(), logins.end(), login);
-
     if (password!=repeatPassword){
         std::cout<<"passwords are not the same"<<'\n';
         QMessageBox::information(this, "пароли не совпадают","мошенник! пароли не совпали!");
@@ -118,7 +121,8 @@ void MainWindow::on_regButton_clicked()
         std::cout<<"such login has been already created"<<'\n';
         QMessageBox::information(this, "такой логин уже существует","прояви фантазию, придумай уникальный логин!");
     }else{
-        sqlStatement = "INSERT INTO data (username, login, password) VALUES ('" + username.toStdString() + "', '" + login.toStdString() + "', '" + password.toStdString() + "');";
+
+        sqlStatement = "INSERT INTO data (username, login, password) VALUES ('" + username.toStdString() + "', '" + login.toStdString() + "', '" + NormalHashedPassword.toStdString() + "');";
         rc = sqlite3_exec(db, sqlStatement.c_str(), 0, 0, &errMsg);
         sqlite3_close(db);
     }
@@ -190,7 +194,5 @@ void MainWindow::on_logButton_clicked()
         std::cout<<"wrong password"<<'\n';
         QMessageBox::information(this, "неверный пароль","чушпанам здесь не рады!! крути педали, пока не дали");
     }
-
-
 }
 
