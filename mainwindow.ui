@@ -66,6 +66,19 @@
      <string>Blackjack</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>70</y>
+      <width>100</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Mines</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

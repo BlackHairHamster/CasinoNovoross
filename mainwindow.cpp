@@ -1,6 +1,7 @@
  #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 #include "blackj.h"
+#include "mines.h"
 
 MainWindow::MainWindow(int balance, QWidget *parent)
     : QMainWindow(parent)
@@ -29,5 +30,13 @@ void MainWindow::on_pushButton_2_clicked()
     hide();
     blackj *black = new blackj(generalBalance, this);
     black->show();
+}
+
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    hide();
+    mines *field = new mines(generalBalance, this);
+    field->show();
 }
 

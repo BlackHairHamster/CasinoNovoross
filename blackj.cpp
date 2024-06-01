@@ -11,8 +11,6 @@ int handSum(std::map<std::string, std::string>, const std::vector<std::string> )
 void basicLine(std::map<std::string, std::string>, std::vector<std::string>&, std::vector<std::string>&, bool&);
 void doubleLine(std::map<std::string, std::string>, std::vector<std::string>&, std::vector<std::string>&, bool&);
 void splitLine(std::map<std::string, std::string>, std::vector<std::string>&, std::vector<std::string>&, bool&);
-void dealerMove(std::map<std::string, std::string>, std::vector<std::string>&, std::vector<std::string>&, std::vector<std::string>&);
-void dealerSplit(std::map<std::string, std::string>, std::vector<std::string>&, std::vector<std::string>&, std::vector<std::string>&, std::vector<std::string>&);
 
 std::vector<std::string> deck;
 std::map<std::string, std::string> weights {
@@ -128,34 +126,6 @@ void blackj::on_pushButton_4_clicked()
     }
 
     else {
-        // if (weights[pc1] == weights[pc2]) {
-        //     ui->label_4->setText(QString::fromStdString("Do you want to split?"));
-        //     std::string command;
-        //     std::getline(std::cin, command);
-        //     if (command == "yes") {
-        //         std::vector<std::string> pcards1, pcards2;
-        //         pcards1.push_back(pc1);
-        //         pcards2.push_back(pc2);
-        //         std::cout<< "First hand:" << '\n';
-        //         basicLine(weights, deck, pcards1, gameEnded);
-        //         std::cout<< "Second hand:" << '\n';
-        //         bool gameEnded2 = 0;
-        //         basicLine(weights, deck, pcards2, gameEnded2);
-        //         if (gameEnded == 0 and gameEnded2 == 1) {
-        //             dealerMove(weights, deck, dcards, pcards1);
-        //         }
-        //         else if (gameEnded == 1 and gameEnded2 == 0) {
-        //             dealerMove(weights, deck, dcards, pcards2);
-        //         }
-        //         else if (gameEnded == 0 and gameEnded2 == 0) {
-        //             dealerSplit(weights, deck, dcards, pcards1, pcards2);
-        //             gameEnded = 1;
-        //         }
-        //     }
-        //     else {
-        //         doubleLine(weights, deck, pcards, gameEnded);
-        //     }
-        // }
         ui->pushButton_5->show();
         ui->pushButton_6->show();
         ui->pushButton_7->show();
@@ -414,53 +384,4 @@ void blackj::on_pushButton_7_clicked()
         }
     }
 }
-
-
-// void dealerMove(std::map<std::string, std::string> weights, std::vector<std::string>& deck, std::vector<std::string>& dcards, std::vector<std::string>& pcards) {
-//     while (handSum(weights, dcards) < 17) {
-//         int rand = random(0, deck.size() - 1);
-//         std::string dc = deck[rand];
-//         dcards.push_back(dc);
-//         deck.erase(deck.begin() + rand);
-//     }
-//     std::string penis = "";
-//     for (size_t i = 0; i < pcards.size(); i++) {
-//         penis = penis + pcard[i] + " ";
-//     }
-//     penis = penis + "; sum - " + std::to_string(handSum(weights, pcards));
-//     ui->label_3->setText(penis);
-//     if (handSum(weights, dcards) > 21) {
-//         ui->label_5->setText(QString::fromStdString("Dealer loh, you win"));
-//         curBalance += 1000;
-//         ui->pushButton_5->hide();
-//         ui->pushButton_6->hide();
-//         ui->pushButton_7->hide();
-
-//     }
-//     else {
-//         if (handSum(weights, dcards) > handSum(weights, pcards)) {
-//             std::string rez = "Dealer wins: " + std::to_string(handSum(weights, dcards)) + " vs " + std::to_string(handSum(weights, pcards));
-//             ui->label_5->setText(QString::fromStdString(rez));
-//             curBalance -= 1000;
-//             ui->pushButton_5->hide();
-//             ui->pushButton_6->hide();
-//             ui->pushButton_7->hide();
-//         }
-//         else if (handSum(weights, dcards) < handSum(weights, pcards)) {
-//             std::string rez = "You win: " + std::to_string(handSum(weights, dcards)) + " vs " + std::to_string(handSum(weights, pcards));
-//             ui->label_5->setText(QString::fromStdString(rez));
-//             curBalance -= 1000;
-//             ui->pushButton_5->hide();
-//             ui->pushButton_6->hide();
-//             ui->pushButton_7->hide();
-//         }
-//         else {
-//             std::string rez = "Tie. Both of you have " + std::to_string(handSum(weights, dcards));
-//             ui->label_5->setText(QString::fromStdString(rez));
-//             ui->pushButton_5->hide();
-//             ui->pushButton_6->hide();
-//             ui->pushButton_7->hide();
-//         }
-//     }
-// }
 
