@@ -12,7 +12,7 @@ class blackj : public QDialog
     Q_OBJECT
 
 public:
-    explicit blackj(int balance, QWidget *parent = nullptr);
+    explicit blackj(double balance, double net, QWidget *parent = nullptr);
     ~blackj();
 
 private slots:
@@ -32,7 +32,8 @@ private slots:
 
 private:
     Ui::blackj *ui;
-    int curBalance;
+    double curBalance;
+    double net;
 };
 
 #endif // BLACKJ_H

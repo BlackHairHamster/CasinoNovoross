@@ -6,11 +6,12 @@
 int randomm(int, int);
 double roundd(double);
 
-mines::mines(int balance, QWidget *parent, std::vector<std::vector<int>> zeroField)
+mines::mines(double balance, double net, QWidget *parent, std::vector<std::vector<int>> zeroField)
     : QDialog(parent)
     , ui(new Ui::mines)
     , field(zeroField)
     , curBalance(balance)
+    , net(net)
 {
     ui->setupUi(this);
     ui->label->setText(QString::number(curBalance));
@@ -117,7 +118,7 @@ void mines::checkCell(int a, int b, QPushButton* button) {
         cellsOpened++;
         if (cellsOpened == 1) ui->pushButton_31->show();
         ui->label_6->show();
-        ui->label_6->setText(QString::fromStdString(std::to_string((int)(multiplier * 1000))));
+        ui->label_6->setText(QString::fromStdString(std::to_string((double)(multiplier * 0.001))));
     }
     else {
         fieldReveal();
@@ -125,13 +126,15 @@ void mines::checkCell(int a, int b, QPushButton* button) {
         winProbability = 1;
         ui->pushButton_31->hide();
         ui->label_6->hide();
-        curBalance -= 1000;
-        ui->label->setText(QString::number(curBalance));
         showMinesNumberChoice();
     }
 }
 
 void mines::on_pushButton_clicked() {
+    curBalance -= 0.001;
+    net -= 0.001;
+    ui->label->setText(QString::number(curBalance));
+
     for (size_t i = 0; i < 5; i++) {
         for (size_t j = 0; j < 5; j++) {
             field[i][j] = 0;
@@ -390,7 +393,7 @@ void mines::on_pushButton_25_clicked()
 void mines::on_pushButton_27_clicked()
 {
     hide();
-    MainWindow *hub = new MainWindow(curBalance, this);
+    MainWindow *hub = new MainWindow(curBalance, net, this);
     hub->show();
 }
 
@@ -421,7 +424,8 @@ void mines::on_pushButton_31_clicked()
     ui->pushButton_31->hide();
     showMinesNumberChoice();
     ui->label_6->hide();
-    curBalance += multiplier * 1000;
+    curBalance += multiplier * 0.001;
+    net += multiplier * 0.001;
     ui->label->setText(QString::number(curBalance));
 }
 

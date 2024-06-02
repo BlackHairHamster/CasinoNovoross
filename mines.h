@@ -13,7 +13,7 @@ class mines : public QDialog
     Q_OBJECT
 
 public:
-    explicit mines(int balance, QWidget *parent = nullptr, std::vector<std::vector<int>> zeroField = std::vector<std::vector<int>>(5, std::vector<int>(5, 0)));
+    explicit mines(double balance, double net, QWidget *parent = nullptr, std::vector<std::vector<int>> zeroField = std::vector<std::vector<int>>(5, std::vector<int>(5, 0)));
     ~mines();
 
 private slots:
@@ -87,7 +87,8 @@ private slots:
 
 private:
     Ui::mines *ui;
-    int curBalance;
+    double curBalance;
+    double net;
     std::vector<std::vector<int>> field;
     std::vector<std::vector<int>> clickedCells;
     std::vector<QPushButton*> buttons;

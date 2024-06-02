@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/quarcodes">
+        <file>quarAdress.png</file>
+    </qresource>
+    <qresource prefix="/new/prefix1"/>
+</RCC>

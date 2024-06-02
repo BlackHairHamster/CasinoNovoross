@@ -32,9 +32,10 @@ std::map<std::string, std::string> weights {
 std::vector<std::string> dcards;
 std::vector<std::string> pcards;
 
-blackj::blackj(int balance, QWidget *parent)
+blackj::blackj(double balance, double net, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::blackj)
+    , net(net)
 {
     ui->setupUi(this);
     curBalance = balance;
@@ -56,7 +57,7 @@ blackj::~blackj()
 void blackj::on_pushButton_clicked()
 {
     hide();
-    MainWindow *hub = new MainWindow(curBalance, this);
+    MainWindow *hub = new MainWindow(curBalance, net, this);
     hub->show();
 }
 
