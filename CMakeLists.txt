@@ -40,6 +40,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         loginization.h loginization.cpp loginization.ui
         handsupgame.h handsupgame.cpp
         musicplayer.h musicplayer.cpp
+        blackj.h blackj.cpp blackj.ui
+        mines.h mines.cpp mines.ui
+
+
+
 
 
 

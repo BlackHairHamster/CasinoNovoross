@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "balanceManager.h"
 #include "pokerwindow.h"
+#include "mines.h"
 #include "./ui_mainwindow.h"
 #include "loginization.h"
 #include <QMovie>
@@ -135,6 +136,26 @@ void MainWindow::on_posterButton1_clicked()
     window->show();
 }
 
+void MainWindow::on_posterButton2_clicked()
+{
+    if(!blackjwindow) {
+        blackjwindow = new blackj(this);
+        connect(blackjwindow, &blackj::balanceChanged, this, &MainWindow::updateBalanceDisplay);
+    }
+    blackjwindow->show();
+}
+
+void MainWindow::on_posterButton3_clicked()
+{
+    if(!mineswindow) {
+        mineswindow = new mines(this);
+        // connect(blackjwindow, &blackj::balanceChanged, this, &MainWindow::updateBalanceDisplay);
+    }
+    mineswindow->show();
+}
+
+
+
 void MainWindow::updateBalanceDisplay(int newBalance)
 {
     ui->balanceNum->setText(QString::number(newBalance));
@@ -211,6 +232,11 @@ void MainWindow::on_songVolButton_clicked()
         volIsUp = true;
     }
 }
+
+
+
+
+
 
 
 

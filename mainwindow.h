@@ -6,6 +6,8 @@
 #include "pokerwindow.h"
 #include "musicplayer.h"
 #include "loginization.h"
+#include "mines.h"
+#include "blackj.h"
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <QMediaPlayer>
@@ -47,10 +49,16 @@ private slots:
 
     void on_songPrevButton_clicked();
 
+    void on_posterButton2_clicked();
+
+    void on_posterButton3_clicked();
+
 private:
     Ui::MainWindow *ui;
     pokerwindow *window;
     loginization *loginWindow;
+    blackj *blackjwindow;
+    mines *mineswindow;
     Mix_Music *backgroundMusic;
     MusicPlayer *musicPlayer;
     QMediaPlayer *player;
