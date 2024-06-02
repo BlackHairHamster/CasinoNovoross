@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <QThread>
 
 int random(int, int);
 int handSum(std::map<std::string, std::string>, const std::vector<std::string> );
@@ -37,8 +38,6 @@ blackj::blackj(QWidget *parent)
     , ui(new Ui::blackj)
 {
     ui->setupUi(this);
-    ui->blackjDealerContent->hide();
-    ui->blackjPlayerContent->hide();
     ui->blackjResultBar->hide();
     ui->blackjHitButton->hide();
     ui->blackjStayButton->hide();
@@ -46,6 +45,15 @@ blackj::blackj(QWidget *parent)
     ui->blackjBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
     connect(&BalanceManager::balanceInstance(), &BalanceManager::balanceChanged,
             this, &blackj::updateDisplayedBalance);
+    ui->blackjDealerCards2Widget->hide();
+    ui->blackjDealerCards3Widget->hide();
+    ui->blackjDealerCards4Widget->hide();
+    ui->blackjDealerCards5Widget->hide();
+    ui->blackjPlayerCards2Widget->hide();
+    ui->blackjPlayerCards3Widget->hide();
+    ui->blackjPlayerCards4Widget->hide();
+    ui->blackjPlayerCards5Widget->hide();
+
 }
 
 blackj::~blackj()
@@ -78,11 +86,18 @@ void blackj::updateDisplayedBalance(int newBalance)
 void blackj::on_blackjPlayButton_clicked()
 {
     ui->blackjPlayButton->hide();
-    ui->blackjDealerContent->show();
-    ui->blackjPlayerContent->show();
     ui->blackjPrizeNum->setText(" ");
     ui->blackjResultBar->setText(QString::fromStdString(""));
     ui->blackjResultBar->show();
+
+    ui->blackjDealerCards2Widget->hide();
+    ui->blackjDealerCards3Widget->hide();
+    ui->blackjDealerCards4Widget->hide();
+    ui->blackjDealerCards5Widget->hide();
+    ui->blackjPlayerCards2Widget->hide();
+    ui->blackjPlayerCards3Widget->hide();
+    ui->blackjPlayerCards4Widget->hide();
+    ui->blackjPlayerCards5Widget->hide();
 
     QString bet = ui->blackjBetNum->text();
     blackjBet = bet.toInt();
@@ -97,6 +112,8 @@ void blackj::on_blackjPlayButton_clicked()
             deck.push_back(pair.first);
         }
     }
+
+
     int rand1 = random(0, 415);
     std::string dc1 = deck[rand1];
     dcards.push_back(dc1);
@@ -113,10 +130,37 @@ void blackj::on_blackjPlayButton_clicked()
     std::string pc2 = deck[rand4];
     pcards.push_back(pc2);
     deck.erase(deck.begin() + rand4);
-    QString dealer = QString::fromStdString("Dealer has: " + dc1 + " ? ; sum - " + weights[dc1]);
-    QString player = QString::fromStdString("You have: " + pc1 + " "+ pc2 + " ; sum - " + std::to_string(handSum(weights, pcards)));
-    ui->blackjDealerContent->setText(dealer);
-    ui->blackjPlayerContent->setText(player);
+    //
+    QString dealer = QString::fromStdString( dc1 + " ?");
+    QString DCard1Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dc1)));
+    QPixmap DCard1(DCard1Text);
+    ui->blackjDealerCards2_1->setPixmap(DCard1);
+    ui->blackjDealerCards3_1->setPixmap(DCard1);
+    ui->blackjDealerCards4_1->setPixmap(DCard1);
+    ui->blackjDealerCards5_1->setPixmap(DCard1);
+    QPixmap backCard(":/files/img/cards1/backCard.png");
+    ui->blackjDealerCards2_2->setPixmap(backCard);
+    ui->blackjDealerCards2Widget->show();
+    //
+    ui->blackjDealerSumNum->setText(QString::fromStdString(weights[dc1]));
+    //
+    QString player = QString::fromStdString(pc1 + " "+ pc2);
+    ui->blackjPlayerSumNum->setText(QString::fromStdString(std::to_string(handSum(weights, pcards))));
+    QString PCard1Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((pc1)));
+    QPixmap PCard1(PCard1Text);
+    ui->blackjPlayerCards2_1->setPixmap(PCard1);
+    ui->blackjPlayerCards3_1->setPixmap(PCard1);
+    ui->blackjPlayerCards4_1->setPixmap(PCard1);
+    ui->blackjPlayerCards5_1->setPixmap(PCard1);
+    QString PCard2Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((pc2)));
+    QPixmap PCard2(PCard2Text);
+    ui->blackjPlayerCards2_2->setPixmap(PCard2);
+    ui->blackjPlayerCards3_2->setPixmap(PCard2);
+    ui->blackjPlayerCards4_2->setPixmap(PCard2);
+    ui->blackjPlayerCards5_2->setPixmap(PCard2);
+    ui->blackjPlayerCards2Widget->show();
+    //
+    //
     if (handSum(weights, pcards) == 21) {
         ui->blackjResultBar->setText(QString::fromStdString("Blackjack, you win!"));
         ui->blackjPlayButton->show();
@@ -125,6 +169,12 @@ void blackj::on_blackjPlayButton_clicked()
         ui->blackjBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
     }
     else if (dc1 == "A" and handSum(weights, dcards) == 21) {
+        QString DCard2Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dc2)));
+        QPixmap DCard2(DCard2Text);
+        ui->blackjDealerCards2_2->setPixmap(DCard2);
+        ui->blackjDealerSumNum->setText("21");
+        QThread::sleep(1);
+
         ui->blackjResultBar->setText(QString::fromStdString("Dealer has Blackjack, you lose!"));
         ui->blackjPlayButton->show();
         ui->blackjBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
@@ -184,10 +234,37 @@ void blackj::on_blackjHitButton_clicked()
     for (size_t i = 0; i < pcards.size(); i++) {
         penis = penis + pcards[i] + " ";
     }
-    penis = penis + "; sum - " + std::to_string(handSum(weights, pcards));
-    ui->blackjPlayerContent->setText(QString::fromStdString(penis));
+    penis = penis;
+    ui->blackjPlayerSumNum->setText(QString::fromStdString(std::to_string(handSum(weights, pcards))));
+
+    if(pcards.size() == 3){
+        ui->blackjPlayerCards2Widget->hide();
+        QString PCard3Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((pcards[2])));
+        QPixmap PCard3(PCard3Text);
+        ui->blackjPlayerCards3_3->setPixmap(PCard3);
+        ui->blackjPlayerCards4_3->setPixmap(PCard3);
+        ui->blackjPlayerCards5_3->setPixmap(PCard3);
+        ui->blackjPlayerCards3Widget->show();
+    } else if (pcards.size()==4){
+        ui->blackjPlayerCards3Widget->hide();
+        QString PCard4Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((pcards[3])));
+        QPixmap PCard4(PCard4Text);
+        ui->blackjPlayerCards4_4->setPixmap(PCard4);
+        ui->blackjPlayerCards5_4->setPixmap(PCard4);
+        ui->blackjPlayerCards4Widget->show();
+    } else {
+        ui->blackjPlayerCards4Widget->hide();
+        QString PCard5Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((pcards[4])));
+        QPixmap PCard5(PCard5Text);
+        ui->blackjPlayerCards5_5->setPixmap(PCard5);
+        ui->blackjPlayerCards5Widget->show();
+    }
+
     if (handSum(weights, pcards) > 21) {
+        ui->blackjDealerSumNum->setText(QString::fromStdString(std::to_string(handSum(weights, dcards))));
         ui->blackjResultBar->setText(QString::fromStdString("you bust haha"));
+
+
         ui->blackjPrizeNum->setText("0");
         ui->blackjHitButton->hide();
         ui->blackjStayButton->hide();
@@ -199,6 +276,12 @@ void blackj::on_blackjHitButton_clicked()
         ui->blackjDoubleButton->hide();
     }
     else {
+        QString DCard2Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[1])));
+        QPixmap DCard2(DCard2Text);
+        ui->blackjDealerCards2_2->setPixmap(DCard2);
+        ui->blackjDealerCards3_2->setPixmap(DCard2);
+        ui->blackjDealerCards4_2->setPixmap(DCard2);
+        ui->blackjDealerCards5_2->setPixmap(DCard2);
         while (handSum(weights, dcards) < 17) {
             int rand = random(0, deck.size() - 1);
             std::string dc = deck[rand];
@@ -208,9 +291,32 @@ void blackj::on_blackjHitButton_clicked()
         std::string penis = "";
         for (size_t i = 0; i < dcards.size(); i++) {
             penis = penis + dcards[i] + " ";
+            if(dcards.size() >= 3){
+                ui->blackjDealerCards2Widget->hide();
+                QString DCard3Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[2])));
+                QPixmap DCard3(DCard3Text);
+                ui->blackjDealerCards3_3->setPixmap(DCard3);
+                ui->blackjDealerCards4_3->setPixmap(DCard3);
+                ui->blackjDealerCards5_3->setPixmap(DCard3);
+                ui->blackjDealerCards3Widget->show();
+            } else if (dcards.size()>=4){
+                ui->blackjDealerCards3Widget->hide();
+                QString DCard4Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[3])));
+                QPixmap DCard4(DCard4Text);
+                ui->blackjDealerCards4_4->setPixmap(DCard4);
+                ui->blackjDealerCards5_4->setPixmap(DCard4);
+                ui->blackjDealerCards4Widget->show();
+            } else {
+                ui->blackjDealerCards4Widget->hide();
+                QString DCard5Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[4])));
+                QPixmap DCard5(DCard5Text);
+                ui->blackjDealerCards5_5->setPixmap(DCard5);
+                ui->blackjDealerCards5Widget->show();
+            }
         }
-        penis = penis + "; sum - " + std::to_string(handSum(weights, dcards));
-        ui->blackjDealerContent->setText(QString::fromStdString(penis));
+        penis = penis;
+        ui->blackjDealerSumNum->setText(QString::fromStdString(std::to_string(handSum(weights, dcards))));
+        ui->blackjBetNum->setDisabled(false);
         if (handSum(weights, dcards) > 21) {
             ui->blackjResultBar->setText(QString::fromStdString("Dealer loh, you win"));
             BalanceManager::balanceInstance().depositBalance(2*blackjBet);
@@ -259,6 +365,12 @@ void blackj::on_blackjHitButton_clicked()
 
 void blackj::on_blackjStayButton_clicked()
 {
+    QString DCard2Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[1])));
+    QPixmap DCard2(DCard2Text);
+    ui->blackjDealerCards2_2->setPixmap(DCard2);
+    ui->blackjDealerCards3_2->setPixmap(DCard2);
+    ui->blackjDealerCards4_2->setPixmap(DCard2);
+    ui->blackjDealerCards5_2->setPixmap(DCard2);
     while (handSum(weights, dcards) < 17) {
         int rand = random(0, deck.size() - 1);
         std::string dc = deck[rand];
@@ -268,9 +380,36 @@ void blackj::on_blackjStayButton_clicked()
     std::string penis = "";
     for (size_t i = 0; i < dcards.size(); i++) {
         penis = penis + dcards[i] + " ";
+
+        if(dcards.size() >= 3){
+            ui->blackjDealerCards2Widget->hide();
+            QString DCard3Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[2])));
+            QPixmap DCard3(DCard3Text);
+            ui->blackjDealerCards3_3->setPixmap(DCard3);
+            ui->blackjDealerCards4_3->setPixmap(DCard3);
+            ui->blackjDealerCards5_3->setPixmap(DCard3);
+            ui->blackjDealerCards3Widget->show();
+        } if (dcards.size()>=4){
+            ui->blackjDealerCards2Widget->hide();
+            ui->blackjDealerCards3Widget->hide();
+            QString DCard4Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[3])));
+            QPixmap DCard4(DCard4Text);
+            ui->blackjDealerCards4_4->setPixmap(DCard4);
+            ui->blackjDealerCards5_4->setPixmap(DCard4);
+            ui->blackjDealerCards4Widget->show();
+        } if(dcards.size() == 5){
+            ui->blackjDealerCards2Widget->hide();
+            ui->blackjDealerCards3Widget->hide();
+            ui->blackjDealerCards4Widget->hide();
+            QString DCard5Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[4])));
+            QPixmap DCard5(DCard5Text);
+            ui->blackjDealerCards5_5->setPixmap(DCard5);
+            ui->blackjDealerCards5Widget->show();
+        }
     }
-    penis = penis + "; sum - " + std::to_string(handSum(weights, dcards));
-    ui->blackjDealerContent->setText(QString::fromStdString(penis));
+    penis = penis;
+    ui->blackjDealerSumNum->setText(QString::fromStdString(std::to_string(handSum(weights, dcards))));
+    ui->blackjBetNum->setDisabled(false);
     if (handSum(weights, dcards) > 21) {
         ui->blackjResultBar->setText(QString::fromStdString("Dealer loh, you win"));
         BalanceManager::balanceInstance().depositBalance(2*blackjBet);
@@ -322,6 +461,9 @@ void blackj::on_blackjStayButton_clicked()
 
 void blackj::on_blackjDoubleButton_clicked()
 {
+    QString DCard2Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[1])));
+    QPixmap DCard2(DCard2Text);
+    ui->blackjDealerCards2_2->setPixmap(DCard2);
     BalanceManager::balanceInstance().withdrawBalance(blackjBet);
     blackjBet = 2*blackjBet;
     ui->blackjBetNum->setText(QString::number(blackjBet));
@@ -332,9 +474,29 @@ void blackj::on_blackjDoubleButton_clicked()
     std::string penis = "";
     for (size_t i = 0; i < pcards.size(); i++) {
         penis = penis + pcards[i] + " ";
+        if(pcards.size() == 3){
+            ui->blackjPlayerCards2Widget->hide();
+            QString PCard3Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((pcards[2])));
+            QPixmap PCard3(PCard3Text);
+            ui->blackjPlayerCards3_3->setPixmap(PCard3);
+            ui->blackjPlayerCards3Widget->show();
+        } else if (pcards.size()==4){
+            ui->blackjPlayerCards3Widget->hide();
+            QString PCard4Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((pcards[3])));
+            QPixmap PCard4(PCard4Text);
+            ui->blackjPlayerCards4_4->setPixmap(PCard4);
+            ui->blackjPlayerCards4Widget->show();
+        } else {
+            ui->blackjPlayerCards4Widget->hide();
+            QString PCard5Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((pcards[4])));
+            QPixmap PCard5(PCard5Text);
+            ui->blackjPlayerCards5_5->setPixmap(PCard5);
+            ui->blackjPlayerCards5Widget->show();
+        }
     }
-    penis = penis + "; sum - " + std::to_string(handSum(weights, pcards));
-    ui->blackjPlayerContent->setText(QString::fromStdString(penis));
+    penis = penis;
+    ui->blackjPlayerSumNum->setText(QString::fromStdString(std::to_string(handSum(weights, pcards))));
+    ui->blackjBetNum->setDisabled(false);
     if (handSum(weights, pcards) > 21) {
         ui->blackjResultBar->setText(QString::fromStdString("you bust haha"));
         ui->blackjBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
@@ -354,9 +516,32 @@ void blackj::on_blackjDoubleButton_clicked()
         std::string penis = "";
         for (size_t i = 0; i < dcards.size(); i++) {
             penis = penis + dcards[i] + " ";
+
+            if(dcards.size() >= 3){
+                ui->blackjDealerCards2Widget->hide();
+                QString DCard3Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[2])));
+                QPixmap DCard3(DCard3Text);
+                ui->blackjDealerCards3_3->setPixmap(DCard3);
+                ui->blackjDealerCards4_3->setPixmap(DCard3);
+                ui->blackjDealerCards5_3->setPixmap(DCard3);
+                ui->blackjDealerCards3Widget->show();
+            } if (dcards.size()>=4){
+                ui->blackjDealerCards3Widget->hide();
+                QString DCard4Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[3])));
+                QPixmap DCard4(DCard4Text);
+                ui->blackjDealerCards4_4->setPixmap(DCard4);
+                ui->blackjDealerCards5_4->setPixmap(DCard4);
+                ui->blackjDealerCards4Widget->show();
+            } if(dcards.size() == 5){
+                ui->blackjDealerCards4Widget->hide();
+                QString DCard5Text = QString(":/files/img/cards1/%1s.png").arg(QString::fromStdString((dcards[4])));
+                QPixmap DCard5(DCard5Text);
+                ui->blackjDealerCards5_5->setPixmap(DCard5);
+                ui->blackjDealerCards5Widget->show();
+            }
         }
-        penis = penis + "; sum - " + std::to_string(handSum(weights, dcards));
-        ui->blackjDealerContent->setText(QString::fromStdString(penis));
+        penis = penis;
+        ui->blackjDealerSumNum->setText(QString::fromStdString(std::to_string(handSum(weights, dcards))));
         if (handSum(weights, dcards) > 21) {
             ui->blackjResultBar->setText(QString::fromStdString("Dealer loh, you win"));
             BalanceManager::balanceInstance().depositBalance(2*blackjBet);
@@ -399,6 +584,7 @@ void blackj::on_blackjDoubleButton_clicked()
                 ui->blackjStayButton->hide();
                 ui->blackjDoubleButton->hide();
                 ui->blackjPlayButton->show();
+                ui->blackjBetNum->setDisabled(false);
             }
         }
     }
