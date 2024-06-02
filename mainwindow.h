@@ -8,8 +8,6 @@
 #include "loginization.h"
 #include "mines.h"
 #include "blackj.h"
-#include <SDL.h>
-#include <SDL_mixer.h>
 #include <QMediaPlayer>
 #include <QAudioOutput>
 
@@ -38,8 +36,7 @@ public slots:
 private slots:
     void on_depositButton_clicked();
     void on_posterButton1_clicked();
-    void on_signInButton_clicked();
-    void on_signUpButton_clicked();
+
 
     void on_songNextButton_clicked();
 
@@ -53,13 +50,13 @@ private slots:
 
     void on_posterButton3_clicked();
 
+    void on_logOutButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     pokerwindow *window;
-    loginization *loginWindow;
     blackj *blackjwindow;
     mines *mineswindow;
-    Mix_Music *backgroundMusic;
     MusicPlayer *musicPlayer;
     QMediaPlayer *player;
     QAudioOutput *audioOutput;

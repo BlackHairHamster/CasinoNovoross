@@ -100,7 +100,7 @@
       <string>Get money</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="signUpButton">
+    <widget class="QPushButton" name="logOutButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -110,20 +110,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Sign up</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="signInButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>270</y>
-       <width>100</width>
-       <height>32</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Sign in</string>
+      <string>Log out</string>
      </property>
     </widget>
    </widget>
@@ -222,7 +209,7 @@
     <property name="styleSheet">
      <string notr="true">border: 1px solid; border-color:red;</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>

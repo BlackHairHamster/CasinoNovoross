@@ -68,6 +68,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+
+
     // player = new QMediaPlayer(this);
     // player->setSource(QUrl::fromLocalFile("/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3"));
     // audioOutput = new QAudioOutput(this);
@@ -100,11 +102,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&BalanceManager::balanceInstance(), &BalanceManager::balanceChanged,
            this, &MainWindow::updateBalanceDisplay);  // подписка на сигнал об обновлении баланса
 
-
-
-
-
-
 }
 
 MainWindow::~MainWindow()
@@ -113,9 +110,6 @@ MainWindow::~MainWindow()
         delete window;
     }
     delete ui;
-    Mix_FreeMusic(backgroundMusic);
-    Mix_CloseAudio();
-    SDL_Quit();
 }
 
 
@@ -174,21 +168,6 @@ void MainWindow::updateBalanceDisplay(int newBalance)
 }
 
 
-void MainWindow::on_signInButton_clicked()
-{
-    loginWindow = new loginization(this);
-    loginWindow->show();
-
-}
-
-
-void MainWindow::on_signUpButton_clicked()
-{
-    loginWindow = new loginization(this);
-    loginWindow->show();
-}
-
-
 void MainWindow::on_songNextButton_clicked()
 {
     musicPlayer->next();
@@ -240,4 +219,17 @@ void MainWindow::on_songVolButton_clicked()
 
 
 
+
+
+void MainWindow::on_logOutButton_clicked()
+{
+    hide();
+    loginization* loginWindow = new loginization(this);
+    loginWindow->show();
+    QPixmap playIcon(":/files/img/songPlayIcon.png");
+    ui->songPlayButton->setIcon(playIcon);
+    musicPlayer->pause();
+    isPlaying = false;
+
+}
 

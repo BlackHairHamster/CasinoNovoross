@@ -2,6 +2,11 @@
 #define LOGINIZATION_H
 
 #include <QDialog>
+#include <QtSql>
+#include <QSqlDatabase>
+#include <QMessageBox>
+#include <QSqlDriver>
+
 
 namespace Ui {
 class loginization;
@@ -22,6 +27,7 @@ private slots:
 
 private:
     Ui::loginization *ui;
+    QSqlDatabase database;
 };
 
 #endif // LOGINIZATION_H
