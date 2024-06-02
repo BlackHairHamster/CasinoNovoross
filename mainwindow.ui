@@ -65,7 +65,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>110</y>
+       <y>140</y>
        <width>58</width>
        <height>16</height>
       </rect>
@@ -78,7 +78,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>130</y>
+       <y>160</y>
        <width>58</width>
        <height>16</height>
       </rect>
@@ -91,7 +91,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>150</y>
+       <y>180</y>
        <width>91</width>
        <height>32</height>
       </rect>
@@ -111,6 +111,32 @@
      </property>
      <property name="text">
       <string>Log out</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>58</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>UserName</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pokerHistoryButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>290</y>
+       <width>100</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Poker HIstory</string>
      </property>
     </widget>
    </widget>
@@ -177,25 +203,6 @@
       <string/>
      </property>
     </widget>
-   </widget>
-   <widget class="QLabel" name="gifLabel">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>320</y>
-      <width>461</width>
-      <height>401</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-    <property name="pixmap">
-     <pixmap>:/files/img/noProfit.gif</pixmap>
-    </property>
-    <property name="scaledContents">
-     <bool>true</bool>
-    </property>
    </widget>
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
@@ -334,6 +341,16 @@
       </item>
      </layout>
     </widget>
+   </widget>
+   <widget class="QWidget" name="widget_2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>270</y>
+      <width>711</width>
+      <height>491</height>
+     </rect>
+    </property>
    </widget>
   </widget>
  </widget>

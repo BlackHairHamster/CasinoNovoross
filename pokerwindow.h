@@ -13,7 +13,7 @@ class pokerwindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit pokerwindow(QWidget *parent = nullptr);
+    explicit pokerwindow(QWidget *parent = nullptr, QString login = "natriy");
     ~pokerwindow();
 
 private slots:
@@ -42,8 +42,11 @@ private:
     int pokerPot;
     int pokerAnte;
     int pokerPrize;
+    int isTurnBet;
+    int isRiverBet;
     QString pokerStage;
     HandsUpGame game;
+    QString login;
 
 };
 

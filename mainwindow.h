@@ -11,6 +11,10 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 
+#include "pokerhistorywindow.h"
+
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,7 +27,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr, QString login = "chuspan");
     bool volIsUp = true;
     bool isPlaying = true;
     QStringList myPlaylist = {"/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/Эщ Эщ.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/SVO.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/Сучка.mp3"};
@@ -52,6 +56,8 @@ private slots:
 
     void on_logOutButton_clicked();
 
+    void on_pokerHistoryButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     pokerwindow *window;
@@ -60,6 +66,9 @@ private:
     MusicPlayer *musicPlayer;
     QMediaPlayer *player;
     QAudioOutput *audioOutput;
+    QString login;
+    pokerhistorywindow *historyWindow;
+
 
 };
 #endif // MAINWINDOW_H

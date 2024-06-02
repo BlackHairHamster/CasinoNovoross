@@ -14,7 +14,7 @@ class mines : public QDialog
     Q_OBJECT
 
 public:
-    explicit mines(QWidget *parent = nullptr);
+    explicit mines(QWidget *parent = nullptr, QString login = "chupa");
     ~mines();
 
 private slots:
@@ -100,6 +100,7 @@ private:
     double multiplier;
     int minesBet;
     bool gameIsGoing;
+    QString login;
 };
 
 #endif // MINES_H

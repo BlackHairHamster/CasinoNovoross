@@ -14,12 +14,16 @@
 
 
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent, QString login)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , login(login)
 
 
 {
+    historyWindow = nullptr;
+
+
     musicPlayer = new MusicPlayer(this);
     ui->setupUi(this);
     ui->balanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
@@ -35,9 +39,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->profilePhotoWidget->setPixmap(koshei0);
     ui->posterButton3->setIconSize(ui->posterButton3->size());
 
-    QMovie* noProfit = new QMovie(":/files/img/noProfit.gif");
-    ui->gifLabel->setMovie(noProfit);
-    noProfit->start();
 
 
     QPixmap nextIcon(":/files/img/songNextIcon.png");
@@ -66,41 +67,9 @@ MainWindow::MainWindow(QWidget *parent)
     musicPlayer->play();
 
 
-
-
-
-
-    // player = new QMediaPlayer(this);
-    // player->setSource(QUrl::fromLocalFile("/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3"));
-    // audioOutput = new QAudioOutput(this);
-    // player->setAudioOutput(audioOutput);
-    // audioOutput->setVolume(50);
-    // ui->songNameLabel->setText("Kudasai");
-    // player->play();
-
-    // ui->songVolSlider->setRange(0, 100);
-    // ui->songVolSlider->setValue(50);
-    // ui->songPosSlider->setRange(0, player->duration());
-
-    // connect(ui->songVolSlider, &QSlider::valueChanged, this, [&](int value) {
-    //     audioOutput->setVolume(value / 100.0);
-    // });
-
-    // connect(ui->songPosSlider, &QSlider::sliderMoved, this, [&](int position) {
-    //     player->setPosition(position);
-    // });
-
-    // connect(player, &QMediaPlayer::positionChanged, this, [&](qint64 position) {
-    //     ui->songPosSlider->setValue(position);
-    // });
-
-    // connect(player, &QMediaPlayer::durationChanged, this, [&](qint64 duration) {
-    //     ui->songPosSlider->setRange(0, duration);
-    // });
-
-
     connect(&BalanceManager::balanceInstance(), &BalanceManager::balanceChanged,
            this, &MainWindow::updateBalanceDisplay);  // подписка на сигнал об обновлении баланса
+    connect(historyWindow, &pokerHistoryWindow::closed, this, &MainWindow::handleHistoryWindowClosed);
 
 }
 
@@ -124,7 +93,7 @@ void MainWindow::on_depositButton_clicked()
 void MainWindow::on_posterButton1_clicked()
 {
     if(!window) {
-        window = new pokerwindow(this);
+        window = new pokerwindow(this, login);
         connect(window, &pokerwindow::balanceChanged, this, &MainWindow::updateBalanceDisplay);
     }
     window->show();
@@ -215,12 +184,6 @@ void MainWindow::on_songVolButton_clicked()
 
 
 
-
-
-
-
-
-
 void MainWindow::on_logOutButton_clicked()
 {
     hide();
@@ -230,6 +193,20 @@ void MainWindow::on_logOutButton_clicked()
     ui->songPlayButton->setIcon(playIcon);
     musicPlayer->pause();
     isPlaying = false;
+
+}
+
+
+void MainWindow::on_pokerHistoryButton_clicked()
+{
+    if (!historyWindow || historyWindow->isHidden()) {
+        historyWindow = new pokerHistoryWindow(this);
+        historyWindow->show();
+    } else {
+        historyWindow->raise();
+        historyWindow->activateWindow();
+    }
+
 
 }
 

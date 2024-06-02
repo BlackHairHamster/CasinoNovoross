@@ -5,15 +5,21 @@
 #include <QPixmap>
 #include <QMessageBox>
 #include <QThread>
+#include <QtSql>
+#include <QSqlDatabase>
+#include <QSqlDriver>
+#include <sqlite3.h>
+#include <iostream>
 
 
-pokerwindow::pokerwindow(QWidget *parent)
+pokerwindow::pokerwindow(QWidget *parent, QString login)
     : QWidget(parent)
     , ui(new Ui::pokerwindow)
     , pokerPot(0)
     , pokerAnte(0)
     , pokerPrize(0)
     , pokerStage("start")
+    , login(login)
 {
     ui->setupUi(this);
     ui->pokerBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
@@ -35,9 +41,6 @@ pokerwindow::pokerwindow(QWidget *parent)
     ui->turnCell->setPixmap(turnBG);
     QPixmap riverBG(":/files/img/riverBG.png");
     ui->riverBackground->setPixmap(riverBG);
-
-
-
 }
 
 
@@ -49,6 +52,30 @@ pokerwindow::~pokerwindow()
                this, &pokerwindow::updateDisplayedBalance);
 
     delete ui;
+}
+
+std::string unWrapHand(hand hand) {
+    std::map<int, std::string> suit{
+                                    {0, "c"}, {1, "d"}, {2, "h"}, {3, "s"}};
+    std::map<int, std::string> nominal{
+                                       {1, "2"}, {2, "3"}, {3, "4"}, {4, "5"}, {5, "6"},
+                                       {6, "7"}, {7, "8"}, {8, "9"}, {9, "T"}, {10, "J"},
+                                       {11, "Q"}, {12, "K"}, {13, "A"}};
+    return nominal[hand.first.first] + suit[hand.first.second] + " " + nominal[hand.second.first] + suit[hand.second.second];
+}
+
+std::string unWrapTable(table table) {
+    std::map<int, std::string> suit{
+                                    {0, "c"}, {1, "d"}, {2, "h"}, {3, "s"}};
+    std::map<int, std::string> nominal{
+                                       {1, "2"}, {2, "3"}, {3, "4"}, {4, "5"}, {5, "6"},
+                                       {6, "7"}, {7, "8"}, {8, "9"}, {9, "T"}, {10, "J"},
+                                       {11, "Q"}, {12, "K"}, {13, "A"}};
+    std::string ans = "";
+    for (size_t i = 0; i < 5; i++) {
+        ans += nominal[table[i].first] + suit[table[i].second] + " ";
+    }
+    return ans;
 }
 
 
@@ -137,6 +164,53 @@ void pokerwindow::updateDisplay()
         game.printAll();
         ui->pokerFlopBar->hide();
         ui->pokerLoseBar->show();
+
+        sqlite3* db;
+        char* errMsg = 0;
+        int rc = sqlite3_open("/Users/capybastercarbonaster/Desktop/RegistrationDB.db", &db);
+
+
+        std::string sqlStatement = "CREATE TABLE IF NOT EXISTS games ("
+                                   "login_of_user TEXT, "
+                                   "player_cards TEXT, "
+                                   "dealer_cards TEXT, "
+                                   "table_cards  TEXT, "
+                                   "ante TEXT, "
+                                   "flop TEXT, "
+                                   "turn TEXT, "
+                                   "river TEXT, "
+                                   "game_rez TEXT, "
+                                   "winning_comb TEXT, "
+                                   "balance_change TEXT)";
+
+        rc = sqlite3_exec(db, sqlStatement.c_str(), 0, 0, &errMsg);
+        if (rc != SQLITE_OK) {
+            std::cerr << "SQL error";
+            sqlite3_free(errMsg);
+        }
+        QSqlDatabase dbq = QSqlDatabase::addDatabase("QSQLITE");
+        dbq.setDatabaseName("/Users/capybastercarbonaster/Desktop/RegistrationDB.db");
+        if (!dbq.open()) {
+            std::cout << "Unable to open the database"; // без этого не работает
+            QMessageBox::information(this, "бд не подключена","чушпанчик, базу данных кто подлючать будет? не по пацански...");
+            return;
+        }
+
+        std::string stringHandP = unWrapHand(game.getPlayerHand());
+        std::string stringHandD = unWrapHand(game.getPlayerHand());
+        std::string stringTable = unWrapTable(game.getTableCards());
+        std::string loginn = login.toStdString();
+        std::string whoWon = game.getWinner();
+        std::string change;
+        if (whoWon ==  "player") change = std::to_string(3*pokerAnte + pokerAnte*isTurnBet + pokerAnte*isRiverBet);
+        else if (whoWon == "dealer") change = "-" + std::to_string(3*pokerAnte + pokerAnte*isTurnBet + pokerAnte*isRiverBet);
+        else change = "0";
+
+        sqlStatement = "INSERT INTO games (login_of_user, player_cards, dealer_cards, table_cards, ante, flop, turn, river, game_rez, winning_comb, balance_change) VALUES ('" + loginn + "', '" + stringHandP + "', '" + stringHandD + "','" + stringTable + "', '" + std::to_string(pokerAnte)  + "', '" + std::to_string(pokerAnte*2) + "', '" + std::to_string(pokerAnte*isTurnBet) + "', '" + std::to_string(pokerAnte*isRiverBet) + "', '" + whoWon + "', '" + game.getWinningComb() + "', '" + change + "');";
+        rc = sqlite3_exec(db, sqlStatement.c_str(), 0, 0, &errMsg);
+        sqlite3_close(db);
+
+
         if (game.getWinner() == "player"){
             pokerPrize = 2*(pokerPot-pokerAnte);
             QString winMessage = QString("You win %1 with %2").arg(pokerPrize).arg(QString::fromStdString(game.getWinningComb()));
@@ -220,6 +294,47 @@ void pokerwindow::on_pokerFoldButton_clicked()
     QMessageBox::information(this, "", loseMessage);
     ui->pokerPreflopBar->hide();
     ui->pokerLoseBar->show();
+
+    sqlite3* db;
+    char* errMsg = 0;
+    int rc = sqlite3_open("/Users/capybastercarbonaster/Desktop/RegistrationDB.db", &db);
+
+
+    std::string sqlStatement = "CREATE TABLE IF NOT EXISTS games ("
+                                   "login_of_user TEXT, "
+     "player_cards TEXT, "
+     "dealer_cards TEXT, "
+     "table_cards  TEXT, "
+     "ante TEXT, "
+     "flop TEXT, "
+     "turn TEXT, "
+     "river TEXT, "
+     "game_rez TEXT, "
+     "winning_comb TEXT, "
+     "balance_change TEXT)";
+
+    rc = sqlite3_exec(db, sqlStatement.c_str(), 0, 0, &errMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "SQL error";
+        sqlite3_free(errMsg);
+    }
+    QSqlDatabase dbq = QSqlDatabase::addDatabase("QSQLITE");
+    dbq.setDatabaseName("/Users/capybastercarbonaster/Desktop/RegistrationDB.db");
+    if (!dbq.open()) {
+        std::cout << "Unable to open the database"; // без этого не работает
+        QMessageBox::information(this, "бд не подключена","чушпанчик, базу данных кто подлючать будет? не по пацански...");
+        return;
+    }
+
+    std::string stringHandP = unWrapHand(game.getPlayerHand());
+    std::string loginn = login.toStdString();
+    std::string DNF = "DNF";
+    std::string change = "-" + std::to_string(pokerAnte);
+
+    sqlStatement = "INSERT INTO games (login_of_user, player_cards, dealer_cards, table_cards, ante, flop, turn, river, game_rez, winning_comb, balance_change) VALUES ('" + loginn + "', '" + stringHandP + "', '" + "-" + "','" + "-" + "', '" + std::to_string(pokerAnte)  + "', '" + DNF + "', '" + DNF + "', '" + DNF + "', '" + "dealer" + "', '" + "-" + "', '" + change + "');";
+            rc = sqlite3_exec(db, sqlStatement.c_str(), 0, 0, &errMsg);
+            sqlite3_close(db);
+
 }
 
 
@@ -227,6 +342,7 @@ void pokerwindow::on_pokerFoldButton_clicked()
 void pokerwindow::on_pokerBetButton_clicked()
 {
     if (pokerStage == "turn"){
+        isTurnBet = 1;
         pokerPot+=pokerAnte;
         ui->pokerPotNum->setText(QString::number(pokerPot));
         BalanceManager::balanceInstance().withdrawBalance(pokerAnte);
@@ -237,6 +353,7 @@ void pokerwindow::on_pokerBetButton_clicked()
 
 
     } else if (pokerStage == "river") {
+        isRiverBet = 1;
         pokerPot+=pokerAnte;
         ui->pokerPotNum->setText(QString::number(pokerPot));
         BalanceManager::balanceInstance().withdrawBalance(pokerAnte);
@@ -253,12 +370,14 @@ void pokerwindow::on_pokerBetButton_clicked()
 void pokerwindow::on_pokerCheckButton_clicked()
 {
     if (pokerStage == "turn"){
+        isTurnBet = 0;
         ui->turnNum->setText("0");
         pokerStage = "river";
         updateDisplay();
 
 
     } else if (pokerStage=="river") {
+        isRiverBet = 0;
         ui->riverNum->setText("0");
         pokerStage = "showdown";
         ui->pokerMysteryWidget->hide();

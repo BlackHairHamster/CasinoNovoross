@@ -248,7 +248,7 @@ void loginization::on_signInLoginButton_clicked()
         std::cout<<"you are allowed to visit our casino"<<'\n';
         QMessageBox::information(this, "победа!","проходи, будь как дома");
         hide();
-        MainWindow *hub = new MainWindow(this);
+        MainWindow *hub = new MainWindow(this, insertedLogin);
         hub->show();
 
     }else if(flag && NormalInsertedHashedPassword!=passwords[index]){
