@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "balanceManager.h"
 #include "pokerwindow.h"
+#include "pokerwindowhistory.h"
 #include "mines.h"
 #include "./ui_mainwindow.h"
 #include "loginization.h"
@@ -14,14 +15,14 @@
 
 
 
-MainWindow::MainWindow(QWidget *parent, QString login)
+MainWindow::MainWindow(QWidget *parent, QString login, QString userName)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , login(login)
+    , userName(userName)
 
 
 {
-    historyWindow = nullptr;
 
 
     musicPlayer = new MusicPlayer(this);
@@ -38,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent, QString login)
     QPixmap koshei0(":/files/img/koshei0.png");
     ui->profilePhotoWidget->setPixmap(koshei0);
     ui->posterButton3->setIconSize(ui->posterButton3->size());
+
+    ui->label->setText(userName);
 
 
 
@@ -69,7 +72,6 @@ MainWindow::MainWindow(QWidget *parent, QString login)
 
     connect(&BalanceManager::balanceInstance(), &BalanceManager::balanceChanged,
            this, &MainWindow::updateBalanceDisplay);  // подписка на сигнал об обновлении баланса
-    connect(historyWindow, &pokerHistoryWindow::closed, this, &MainWindow::handleHistoryWindowClosed);
 
 }
 
@@ -93,7 +95,7 @@ void MainWindow::on_depositButton_clicked()
 void MainWindow::on_posterButton1_clicked()
 {
     if(!window) {
-        window = new pokerwindow(this, login);
+        window = new pokerwindow(this, login, userName);
         connect(window, &pokerwindow::balanceChanged, this, &MainWindow::updateBalanceDisplay);
     }
     window->show();
@@ -102,7 +104,7 @@ void MainWindow::on_posterButton1_clicked()
 void MainWindow::on_posterButton2_clicked()
 {
     if(!blackjwindow) {
-        blackjwindow = new blackj(this);
+        blackjwindow = new blackj(this, login, userName);
         connect(blackjwindow, &blackj::balanceChanged, this, &MainWindow::updateBalanceDisplay);
     }
     blackjwindow->show();
@@ -111,7 +113,7 @@ void MainWindow::on_posterButton2_clicked()
 void MainWindow::on_posterButton3_clicked()
 {
     if(!mineswindow) {
-        mineswindow = new mines(this);
+        mineswindow = new mines(this, login, userName);
         // connect(blackjwindow, &blackj::balanceChanged, this, &MainWindow::updateBalanceDisplay);
     }
     mineswindow->show();
@@ -199,14 +201,10 @@ void MainWindow::on_logOutButton_clicked()
 
 void MainWindow::on_pokerHistoryButton_clicked()
 {
-    if (!historyWindow || historyWindow->isHidden()) {
-        historyWindow = new pokerHistoryWindow(this);
-        historyWindow->show();
-    } else {
-        historyWindow->raise();
-        historyWindow->activateWindow();
+    if(!historyWindow) {
+        historyWindow = new pokerwindowhistory(this, userName, login);
     }
-
+    historyWindow->show();
 
 }
 

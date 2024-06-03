@@ -16,31 +16,6 @@
   <property name="styleSheet">
    <string notr="true">justify-content: space-between;</string>
   </property>
-  <widget class="QPushButton" name="blackjBackButton">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>20</y>
-     <width>80</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>80</width>
-     <height>35</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>80</width>
-     <height>35</height>
-    </size>
-   </property>
-   <property name="text">
-    <string>Go back</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="blackjDealerContent">
    <property name="geometry">
     <rect>
@@ -326,7 +301,7 @@
 background: green;
 </string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>130</x>
@@ -1205,7 +1180,7 @@ background: green;</string>
     </layout>
    </widget>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>410</x>
@@ -1266,7 +1241,7 @@ background: green;</string>
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>420</x>
@@ -1327,20 +1302,14 @@ background: green;</string>
     </item>
    </layout>
   </widget>
-  <zorder>blackjBackButton</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>layoutWidget</zorder>
   <zorder>blackjDealerContent</zorder>
   <zorder>blackjResultBar</zorder>
   <zorder>blackjPlayButton</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>layoutWidget_2</zorder>
-  <zorder>blackjBalanceTitle</zorder>
-  <zorder>blackjBalanceNum</zorder>
-  <zorder>blackjDealerSumTitle</zorder>
-  <zorder>blackjDealerSumNum</zorder>
-  <zorder>layoutWidget_3</zorder>
-  <zorder>blackjDealerTitle</zorder>
-  <zorder>blackjPlayerTitle</zorder>
   <zorder>blackjPlayerCards5Widget</zorder>
   <zorder>blackjPlayerCards4Widget</zorder>
   <zorder>blackjPlayerCards3Widget</zorder>

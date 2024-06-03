@@ -6,10 +6,11 @@
 int randomm(int, int);
 double roundd(double);
 
-mines::mines(QWidget *parent, QString login)
+mines::mines(QWidget *parent, QString login, QString userName )
     : QDialog(parent)
     , ui(new Ui::mines)
     , login(login)
+    , userName(userName)
 {
     ui->setupUi(this);
      ui->minesBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
@@ -404,12 +405,12 @@ void mines::on_pushButton_25_clicked()
 }
 
 
-void mines::on_pushButton_27_clicked()
-{
-    hide();
-    MainWindow *hub = new MainWindow(this, login);
-    hub->show();
-}
+// void mines::on_pushButton_27_clicked()
+// {
+//     hide();
+//     MainWindow *hub = new MainWindow(this, login, userName);
+//     hub->show();
+// }
 
 
 void mines::on_pushButton_28_clicked()

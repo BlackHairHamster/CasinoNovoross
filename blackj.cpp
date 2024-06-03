@@ -33,10 +33,11 @@ std::map<std::string, std::string> weights {
 std::vector<std::string> dcards;
 std::vector<std::string> pcards;
 
-blackj::blackj(QWidget *parent, QString login)
+blackj::blackj(QWidget *parent, QString login, QString userName )
     : QDialog(parent)
     , ui(new Ui::blackj)
     , login(login)
+    , userName(userName)
 {
     ui->setupUi(this);
     ui->blackjResultBar->hide();
@@ -68,13 +69,13 @@ void blackj::on_blackjDepositButton_clicked()
     ui->blackjBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));
 }
 
-void blackj::on_blackjBackButton_clicked()
-{
-    hide();
-    MainWindow *hub = new MainWindow(this, login);
-    hub->show();
-    emit balanceChanged(BalanceManager::balanceInstance().getBalance());
-}
+// void blackj::on_blackjBackButton_clicked()
+// {
+//     hide();
+//     MainWindow *hub = new MainWindow(this, login, userName);
+//     hub->show();
+//     emit balanceChanged(BalanceManager::balanceInstance().getBalance());
+// }
 
 void blackj::updateDisplayedBalance(int newBalance)
 {

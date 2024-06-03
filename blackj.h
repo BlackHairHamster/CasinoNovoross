@@ -12,11 +12,11 @@ class blackj : public QDialog
     Q_OBJECT
 
 public:
-    explicit blackj(QWidget *parent = nullptr, QString login = "suka");
+    explicit blackj(QWidget *parent = nullptr, QString login = "sus", QString userName = "sus");
     ~blackj();
 
 private slots:
-    void on_blackjBackButton_clicked();
+    //void on_blackjBackButton_clicked();
 
     void on_blackjPlayButton_clicked();
 
@@ -38,6 +38,7 @@ private:
     Ui::blackj *ui;
     int blackjBet;
     QString login;
+    QString userName;
 };
 
 #endif // BLACKJ_H

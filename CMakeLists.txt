@@ -43,7 +43,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         musicplayer.h musicplayer.cpp
         blackj.h blackj.cpp blackj.ui
         mines.h mines.cpp mines.ui
-        pokerhistorywindow.h pokerhistorywindow.cpp pokerhistorywindow.ui
+        pokerwindowhistory.h pokerwindowhistory.cpp pokerwindowhistory.ui
+
+
 
 
 

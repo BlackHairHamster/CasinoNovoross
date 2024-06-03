@@ -225,6 +225,7 @@ void loginization::on_signInLoginButton_clicked()
     std::cout<<'\n';
 
     QString insertedLogin = ui->loginSigninBar->text();
+
     QString insertedPassword = ui->passwordSigninBar->text();
     std::hash<QString> hasher;
     std::cout << insertedLogin.toStdString()<<'\t';
@@ -240,15 +241,16 @@ void loginization::on_signInLoginButton_clicked()
         std::cout<<"no such login"<<'\n';
         QMessageBox::information(this, "такого логина не существует","такого логина не существует, попробуйте вспомнить свой логин");
     }
-    std::cout<<index<<'\n';
+    //std::cout<<index<<'\n';
     size_t insertedHashedPassword = hasher(insertedPassword+salts[index]);
     QString NormalInsertedHashedPassword = QString::number(insertedHashedPassword);
-
+    QString userName = usernames[index];
+    //std::cout<<username.toString();
     if (flag && NormalInsertedHashedPassword==passwords[index]){
         std::cout<<"you are allowed to visit our casino"<<'\n';
         QMessageBox::information(this, "победа!","проходи, будь как дома");
         hide();
-        MainWindow *hub = new MainWindow(this, insertedLogin);
+        MainWindow *hub = new MainWindow(this, insertedLogin, userName);
         hub->show();
 
     }else if(flag && NormalInsertedHashedPassword!=passwords[index]){

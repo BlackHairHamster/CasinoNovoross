@@ -14,7 +14,7 @@ class mines : public QDialog
     Q_OBJECT
 
 public:
-    explicit mines(QWidget *parent = nullptr, QString login = "chupa");
+    explicit mines(QWidget *parent = nullptr, QString login = "chupa", QString userName = "sus");
     ~mines();
 
 private slots:
@@ -75,7 +75,7 @@ private slots:
 
     void on_pushButton_25_clicked();
 
-    void on_pushButton_27_clicked();
+    //void on_pushButton_27_clicked();
 
     void on_pushButton_28_clicked();
 
@@ -101,6 +101,7 @@ private:
     int minesBet;
     bool gameIsGoing;
     QString login;
+    QString userName;
 };
 
 #endif // MINES_H

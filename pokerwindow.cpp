@@ -12,7 +12,7 @@
 #include <iostream>
 
 
-pokerwindow::pokerwindow(QWidget *parent, QString login)
+pokerwindow::pokerwindow(QWidget *parent, QString login, QString userName )
     : QWidget(parent)
     , ui(new Ui::pokerwindow)
     , pokerPot(0)
@@ -20,6 +20,7 @@ pokerwindow::pokerwindow(QWidget *parent, QString login)
     , pokerPrize(0)
     , pokerStage("start")
     , login(login)
+    , userName(userName)
 {
     ui->setupUi(this);
     ui->pokerBalanceNum->setText(QString::number(BalanceManager::balanceInstance().getBalance()));

@@ -6,12 +6,12 @@
 #include "pokerwindow.h"
 #include "musicplayer.h"
 #include "loginization.h"
+#include "pokerwindowhistory.h"
 #include "mines.h"
 #include "blackj.h"
 #include <QMediaPlayer>
 #include <QAudioOutput>
 
-#include "pokerhistorywindow.h"
 
 
 
@@ -27,7 +27,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr, QString login = "chuspan");
+    MainWindow(QWidget *parent = nullptr, QString login = "chuspan", QString userName = "chuspan");
     bool volIsUp = true;
     bool isPlaying = true;
     QStringList myPlaylist = {"/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/kudasai.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/Эщ Эщ.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/SVO.mp3", "/Users/capybastercarbonaster/Desktop/cpp/CasinoNovoross/files/music/Сучка.mp3"};
@@ -67,7 +67,9 @@ private:
     QMediaPlayer *player;
     QAudioOutput *audioOutput;
     QString login;
-    pokerhistorywindow *historyWindow;
+    QString userName;
+    pokerwindowhistory* historyWindow;
+
 
 
 };
