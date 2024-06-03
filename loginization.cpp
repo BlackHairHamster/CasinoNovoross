@@ -90,7 +90,8 @@ void loginization::on_signupLoginButton_clicked()
                                "username TEXT, "
                                "login TEXT, "
                                "password TEXT, "
-                               "salt TEXT)";
+                               "salt TEXT, "
+                               "balance TEXT)";
     // std::string sqlStatement = "CREATE TABLE IF NOT EXISTS data ("
     //                            "username TEXT PRIMARY KEY, "
     //                            "login TEXT, "
@@ -164,7 +165,7 @@ void loginization::on_signupLoginButton_clicked()
         std::cout<<"passwords are not the same"<<'\n';
         QMessageBox::information(this, "пароли не совпадают","мошенник! пароли не совпали!");
     }else{
-        sqlStatement = "INSERT INTO data (username, login, password, salt) VALUES ('" + username.toStdString() + "', '" + login.toStdString() + "', '" + NormalHashedPassword.toStdString() + "','" + randomString.toStdString() + "');";
+        sqlStatement = "INSERT INTO data (username, login, password, salt, balance) VALUES ('" + username.toStdString() + "', '" + login.toStdString() + "', '" + NormalHashedPassword.toStdString() + "','" + randomString.toStdString() + "','" + "0" +"');";
         rc = sqlite3_exec(db, sqlStatement.c_str(), 0, 0, &errMsg);
         sqlite3_close(db);
         std::cout<<"registered successfully"<<'\n';
@@ -184,7 +185,7 @@ void loginization::on_signInLoginButton_clicked()
         return;
     }
     QSqlQuery query;
-    query.prepare("SELECT username, login, password, salt FROM data");
+    query.prepare("SELECT username, login, password, salt, balance FROM data");
     if (!query.exec()) {
         std::cout << "Unable to make the correct query";
         QMessageBox::information(this, "запрос не выполнен","снова ошибочка...");
@@ -194,15 +195,19 @@ void loginization::on_signInLoginButton_clicked()
     std::vector<QString> logins;
     std::vector<QString> passwords;
     std::vector<QString> salts;
+    std::vector<double> balances;
     while (query.next()) {
         auto username = query.value("username").toString();
         auto login = query.value("login").toString();
         auto password = query.value("password").toString();
         auto salt = query.value("salt").toString();
+        auto balanceStr = query.value("balance").toString();
+        double balance = std::stod(balanceStr.toStdString());
         usernames.push_back(username);
         logins.push_back(login);
         passwords.push_back(password);
         salts.push_back(salt);
+        balances.push_back(balance);
     }
     for (QString x:usernames){
         std::cout<<x.toStdString()<<'\t';
@@ -245,13 +250,16 @@ void loginization::on_signInLoginButton_clicked()
     size_t insertedHashedPassword = hasher(insertedPassword+salts[index]);
     QString NormalInsertedHashedPassword = QString::number(insertedHashedPassword);
     QString userName = usernames[index];
+    double balanceOfUser = balances[index];
+    BalanceManager::balanceInstance().setBalance(balanceOfUser);
+
     //std::cout<<username.toString();
     if (flag && NormalInsertedHashedPassword==passwords[index]){
         std::cout<<"you are allowed to visit our casino"<<'\n';
         QMessageBox::information(this, "победа!","проходи, будь как дома");
-        hide();
         MainWindow *hub = new MainWindow(this, insertedLogin, userName);
         hub->show();
+        hide();
 
     }else if(flag && NormalInsertedHashedPassword!=passwords[index]){
         std::cout<<"wrong password"<<'\n';

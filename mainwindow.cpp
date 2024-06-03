@@ -11,6 +11,11 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QCoreApplication>
+#include <iostream>
+#include <QtSql>
+#include <QSqlDatabase>
+#include <QSqlDriver>
+#include <sqlite3.h>
 
 
 
@@ -77,10 +82,54 @@ MainWindow::MainWindow(QWidget *parent, QString login, QString userName)
 
 MainWindow::~MainWindow()
 {
+
+
     if(window) {
         delete window;
     }
     delete ui;
+}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+    std::string penis = std::to_string(BalanceManager::balanceInstance().getBalance());
+
+    sqlite3* db;
+    char* errMsg = 0;
+
+
+    QSqlDatabase dbq = QSqlDatabase::addDatabase("QSQLITE");
+    dbq.setDatabaseName("/Users/capybastercarbonaster/Desktop/RegistrationDB.db");
+    if (!dbq.open()) {
+        std::cout << "Unable to open the database"; // без этого не работает
+        QMessageBox::information(this, "бд не подключена","чушпанчик, базу данных кто подлючать будет? не по пацански...");
+        return;
+    }
+    QSqlQuery query;
+    query.prepare("SELECT username, login, password FROM data");
+    if (!query.exec()) {
+        std::cout << "Unable to make the correct query"<<'\n';
+        QMessageBox::information(this, "запрос не выполнен","снова ошибочка с бдшкой...");
+        return;
+    }
+    std::vector<QString> logins;
+    while (query.next()) {
+        auto login = query.value("login").toString();
+        logins.push_back(login);
+    }
+    int index;
+    auto point = std::find(logins.begin(), logins.end(), login);
+    if (point!=logins.end()){
+        index=point-logins.begin();
+    }
+    std::cout<<penis;
+    std::string sqlStatement = "UPDATE data SET balance = '" + penis + "' WHERE login = '" + login.toStdString() + "' ;";
+    // std::string sqlStatement = "SELECT * from data";
+
+    const char* str1 = sqlStatement.c_str();
+    std::cout<<penis<<'\t'<<sqlStatement;
+    sqlite3_open("/Users/capybastercarbonaster/Desktop/RegistrationDB.db", &db);
+    int rc = sqlite3_exec(db, str1, 0, 0, &errMsg);
+    sqlite3_close(db);
 }
 
 
@@ -196,6 +245,46 @@ void MainWindow::on_logOutButton_clicked()
     musicPlayer->pause();
     isPlaying = false;
 
+    std::string penis = std::to_string(BalanceManager::balanceInstance().getBalance());
+
+    sqlite3* db;
+    char* errMsg = 0;
+
+
+    QSqlDatabase dbq = QSqlDatabase::addDatabase("QSQLITE");
+    dbq.setDatabaseName("/Users/capybastercarbonaster/Desktop/RegistrationDB.db");
+    if (!dbq.open()) {
+        std::cout << "Unable to open the database"; // без этого не работает
+        QMessageBox::information(this, "бд не подключена","чушпанчик, базу данных кто подлючать будет? не по пацански...");
+        return;
+    }
+    QSqlQuery query;
+    query.prepare("SELECT username, login, password FROM data");
+    if (!query.exec()) {
+        std::cout << "Unable to make the correct query"<<'\n';
+        QMessageBox::information(this, "запрос не выполнен","снова ошибочка с бдшкой...");
+        return;
+    }
+    std::vector<QString> logins;
+    while (query.next()) {
+        auto login = query.value("login").toString();
+        logins.push_back(login);
+    }
+    int index;
+    auto point = std::find(logins.begin(), logins.end(), login);
+    if (point!=logins.end()){
+        index=point-logins.begin();
+    }
+    std::cout<<penis;
+    std::string sqlStatement = "UPDATE data SET balance = '" + penis + "' WHERE login = '" + login.toStdString() + "' ;";
+    // std::string sqlStatement = "SELECT * from data";
+
+    const char* str1 = sqlStatement.c_str();
+    std::cout<<penis<<'\t'<<sqlStatement;
+    sqlite3_open("/Users/capybastercarbonaster/Desktop/RegistrationDB.db", &db);
+    int rc = sqlite3_exec(db, str1, 0, 0, &errMsg);
+    sqlite3_close(db);
+
 }
 
 
@@ -207,4 +296,6 @@ void MainWindow::on_pokerHistoryButton_clicked()
     historyWindow->show();
 
 }
+
+
 

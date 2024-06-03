@@ -11,6 +11,7 @@
 #include "blackj.h"
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QCloseEvent>
 
 
 
@@ -57,6 +58,10 @@ private slots:
     void on_logOutButton_clicked();
 
     void on_pokerHistoryButton_clicked();
+
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     Ui::MainWindow *ui;
